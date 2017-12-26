@@ -1,6 +1,6 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :list do
-    title "MyString"
-    user nil
+    title {Faker::Lorem.word}
+    user
   end
 end

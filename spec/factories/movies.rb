@@ -1,7 +1,7 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :movie do
-    title "MyString"
-    poster_path "MyString"
-    rating 1
+    title {Faker::Lorem.word}
+    poster_path {Faker::Internet.url}
+    rating {Faker::Number.between(0, 10)}
   end
 end

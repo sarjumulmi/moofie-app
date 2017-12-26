@@ -1,9 +1,8 @@
-require 'Faker'
-
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
-    username "MyString"
-    email "MyString"
-    password_digest "MyString"
+    username {Faker::Internet.user_name}
+    email {Faker::Internet.email}
+    password "password"
+    password_confirmation "password"
   end
 end
