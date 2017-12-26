@@ -22,6 +22,17 @@ RSpec.describe 'User signup API', type: :request do
       end
     end
 
+    context 'invalid login' do
+      before {post '/api/user_token', params: {"auth": {"email": valid_user_attributes[:email], "password": "1234"}}}
+
+      it "responds with a status 404" do
+        expect(response).to have_http_status(404)
+      end
+      it "returns an error message" do
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(json[:errors][:messages]).to eq(["Invalid credentials"])
+      end
+    end
 
   end
 end
