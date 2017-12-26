@@ -5,4 +5,14 @@ class User < ApplicationRecord
   validates :username, :email, uniqueness: true
 
   has_many :lists
+
+  def to_token_payload
+    # Returns the payload as a hash
+    {user: {
+      user_id: self.id,
+      username: self.username,
+      email: self.email
+      }
+    }
+  end
 end
