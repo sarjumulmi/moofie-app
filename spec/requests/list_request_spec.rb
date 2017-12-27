@@ -10,16 +10,9 @@ RSpec.describe 'Lists API', type: :request do
       let!(:user2) {User.create(user_attributes2)}
       let!(:lists1) {create_list(:list, 4, user:user1)}
       let!(:lists2) {create_list(:list, 2, user:user2)}
-      let(:auth_header){
-        token = Knock::AuthToken.new(payload: {user:
-          {userId: user1.id, username: user1.username, email: user1.email}}).token
-          {
-          'Authorization': "Bearer #{token}"
-          }
-        }
       before(:each) do
         post '/api/user_token', params: {"auth": {"email": user_attributes1[:email], "password": "password"}}
-        get '/api/lists', headers: auth_header
+        get '/api/lists', headers: auth_header(user1)
       end
 
       it "responds with a status of 201" do
@@ -51,6 +44,38 @@ RSpec.describe 'Lists API', type: :request do
   end
 
   describe 'POST /api/lists' do
+    context 'Authorized user' do
+      let(:user_attributes) {attributes_for(:user)}
+      let!(:user) {User.create(user_attributes)}
+      let!(:lists) {create_list(:list, 4, user:user)}
+      let (:list_attributes) {
+        {
+          list: {
+            title: "#{Faker::Lorem.word}-100",
+            user_id: user.id
+          }
+        }
+      }
+
+      before {
+        post '/api/user_token', params: {"auth": {"email": user_attributes[:email], "password": "password"}}
+        post '/api/lists', headers: auth_header(user), params: list_attributes
+      }
+
+      it "response with a 201 status" do
+        expect(response).to have_http_status(201)
+      end
+      it "returns the created list" do
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(json[:title]).to eq(list_attributes[:list][:title])
+      end
+      it "adds the created list to the list index" do
+        get '/api/lists', headers: auth_header(user)
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(json.size).to be(5)
+      end
+
+    end
 
   end
 

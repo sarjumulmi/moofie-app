@@ -8,6 +8,7 @@ require 'rspec/rails'
 require 'database_cleaner'
 require 'support/factory_bot'
 require 'faker'
+require 'helpers/auth_helpers'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -54,4 +55,5 @@ RSpec.configure do |config|
       example.run
     end
   end
+  config.include AuthHelpers
 end
