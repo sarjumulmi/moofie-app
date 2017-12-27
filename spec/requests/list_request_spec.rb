@@ -44,11 +44,77 @@ RSpec.describe 'Lists API', type: :request do
   end
 
   describe 'POST /api/lists' do
+
     context 'Authorized user' do
       let(:user_attributes) {attributes_for(:user)}
       let!(:user) {User.create(user_attributes)}
       let!(:lists) {create_list(:list, 4, user:user)}
-      let (:list_attributes) {
+
+      context 'Valid parameters' do
+        let(:user_attributes) {attributes_for(:user)}
+        let!(:user) {User.create(user_attributes)}
+        let(:list_attributes) {
+          {
+            list: {
+              title: "#{Faker::Lorem.word}-100",
+              user_id: user.id
+            }
+          }
+        }
+
+        before {
+          post '/api/user_token', params: {"auth": {"email": user_attributes[:email], "password": "password"}}
+          post '/api/lists', headers: auth_header(user), params: list_attributes
+        }
+
+        it "response with a 201 status" do
+          expect(response).to have_http_status(201)
+        end
+        it "returns the created list" do
+          json = JSON.parse(response.body, symbolize_names: true)
+          expect(json[:title]).to eq(list_attributes[:list][:title])
+        end
+        it "adds the created list to the list index" do
+          get '/api/lists', headers: auth_header(user)
+          json = JSON.parse(response.body, symbolize_names: true)
+          expect(json.size).to be(5)
+        end
+      end
+
+      context 'invalid parameters' do
+        let(:user_attributes) {attributes_for(:user)}
+        let!(:user) {User.create(user_attributes)}
+        let (:list_attributes) {
+          {
+            list: {
+              title: "",
+              user_id: ""
+            }
+          }
+        }
+        before {
+          post '/api/user_token', params: {"auth": {"email": user_attributes[:email], "password": "password"}}
+          post '/api/lists', headers: auth_header(user), params: list_attributes
+        }
+        it "returns status code of 422" do
+          expect(response).to have_http_status(422)
+        end
+        it "returns error messages" do
+          json = JSON.parse(response.body, symbolize_names: true)
+          expect(json[:errors][:messages]).to eq(
+            {:title=>["can't be blank"],
+            :user_id=>["can't be blank"],
+            :user=>["must exist"]
+            })
+        end
+      end
+
+    end
+
+    context 'Unauthorized user' do
+      let(:user_attributes) {attributes_for(:user)}
+      let!(:user) {User.create(user_attributes)}
+      let(:list_attributes) {
         {
           list: {
             title: "#{Faker::Lorem.word}-100",
@@ -56,23 +122,16 @@ RSpec.describe 'Lists API', type: :request do
           }
         }
       }
-
       before {
-        post '/api/user_token', params: {"auth": {"email": user_attributes[:email], "password": "password"}}
-        post '/api/lists', headers: auth_header(user), params: list_attributes
+        post '/api/lists', params: list_attributes
       }
 
-      it "response with a 201 status" do
-        expect(response).to have_http_status(201)
+      it "returns a status of 401" do
+        expect(response).to have_http_status(401)
       end
-      it "returns the created list" do
+      it "returns an error message" do
         json = JSON.parse(response.body, symbolize_names: true)
-        expect(json[:title]).to eq(list_attributes[:list][:title])
-      end
-      it "adds the created list to the list index" do
-        get '/api/lists', headers: auth_header(user)
-        json = JSON.parse(response.body, symbolize_names: true)
-        expect(json.size).to be(5)
+        expect(json[:errors][:messages]).to eq(["User is Unauthorized"])
       end
 
     end
