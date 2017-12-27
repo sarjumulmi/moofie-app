@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :list do
-    title {Faker::Lorem.word}
+    sequence(:title) {|n| "#{Faker::Lorem.word}#{n}" }
     user
   end
 end

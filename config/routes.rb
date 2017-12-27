@@ -3,5 +3,6 @@ Rails.application.routes.draw do
   namespace :api do
     post '/signup', to: 'users#create'
     post '/user_token' => 'user_token#create'
+    resources :lists, only: [:index]
   end
 end
