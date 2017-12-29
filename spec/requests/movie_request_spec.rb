@@ -28,23 +28,42 @@ RSpec.describe 'Movies API', type: :request do
           expect(movies[0][:title]).to eq(movies.first[:title])
         end
       end
+
+      context "Authorized user" do
+        let(:user2_attributes) {attributes_for(:user)}
+        let!(:user2) {User.create(user2_attributes)}
+        let!(:list2) {create(:list_with_movies, user:user2)}
+        let (:list2_id) {list2.id}
+        before(:each) do
+          get "/api/lists/#{list2_id}/movies", headers: auth_header(user)
+        end
+
+        it "responds with a status of 403" do
+          expect(response).to have_http_status(403)
+        end
+        it "responds with errors" do
+          json = JSON.parse(response.body, symbolize_names: true)
+          expect(json[:errors][:messages]).to eq(["User not authorized"])
+        end
+      end
     end
 
-  #   context 'Unauthenticated user' do
-  #     let(:user_attributes) {attributes_for(:user)}
-  #     let!(:user) {User.create(user_attributes)}
-  #     let!(:lists) {create_list(:list, 4, user:user)}
-  #     before {get '/api/lists'}
-  #
-  #     it "returns a status of 401" do
-  #       expect(response).to have_http_status(401)
-  #     end
-  #     it "returns an error message" do
-  #       json = JSON.parse(response.body, symbolize_names: true)
-  #       expect(json[:errors][:messages]).to eq(["User is Unauthorized"])
-  #     end
-  #   end
-  #
+    context 'Unauthenticated user' do
+      let(:user_attributes) {attributes_for(:user)}
+      let!(:user) {User.create(user_attributes)}
+      let!(:list) {create(:list_with_movies, user:user)}
+      let (:list_id) {list.id}
+      before {get "/api/lists/#{list_id}/movies"}
+
+      it "returns a status of 401" do
+        expect(response).to have_http_status(401)
+      end
+      it "returns an error message" do
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(json[:errors][:messages]).to eq(["User is Unauthorized"])
+      end
+    end
+    
   end
   #
   # describe 'POST /api/lists' do

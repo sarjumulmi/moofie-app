@@ -20,7 +20,7 @@ class API::MoviesController < ApplicationController
   end
 
   def authenticate_current_user
-    render json: {errors: {messages: ["User not authorized"] }}, status: 404 unless @list
+    render json: {errors: {messages: ["User not authorized"] }}, status: 403 unless @list
   end
 
   def movie_params
