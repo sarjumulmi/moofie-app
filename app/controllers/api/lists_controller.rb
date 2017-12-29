@@ -4,7 +4,12 @@ class API::ListsController < ApplicationController
 
   def index
     lists = List.where('user_id=?', current_user)
-    render json: lists, status: 201
+    if !lists.empty?
+      render json: lists, status: 201
+    else
+      render json: [], status: 200
+    end
+
   end
 
   def create
