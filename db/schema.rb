@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171224143706) do
+ActiveRecord::Schema.define(version: 20171228164815) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "list_movies", force: :cascade do |t|
+    t.integer "list_id"
+    t.integer "movie_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["list_id"], name: "index_list_movies_on_list_id"
+    t.index ["movie_id"], name: "index_list_movies_on_movie_id"
+  end
 
   create_table "lists", force: :cascade do |t|
     t.string "title"
@@ -29,6 +38,8 @@ ActiveRecord::Schema.define(version: 20171224143706) do
     t.integer "rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "ext_id", null: false
+    t.index ["ext_id"], name: "index_movies_on_ext_id"
   end
 
   create_table "users", force: :cascade do |t|

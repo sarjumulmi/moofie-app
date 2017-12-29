@@ -1,6 +1,7 @@
 class Movie < ApplicationRecord
-  validates :title, presence: true
+  validates :title, :ext_id, presence: true
   validates_inclusion_of :rating, in: 0..10
 
-  has_and_belongs_to_many :lists
+  has_many :list_movies
+  has_many :lists, through: :list_movies
 end
