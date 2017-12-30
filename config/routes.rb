@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     post '/signup', to: 'users#create'
     post '/user_token' => 'user_token#create'
     resources :lists, only: [:index, :create, :show] do
-      resources :movies, only: [:index]
+      resources :movies, only: [:index, :create]
     end
   end
 end

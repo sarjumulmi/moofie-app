@@ -11,6 +11,23 @@ class API::MoviesController < ApplicationController
     end
   end
 
+  def create
+    movie = Movie.find_or_initialize_by(ext_id: params[:movie][:ext_id])
+    # binding.pry
+    if movie.id
+      @list.movies<<movie
+      render json: movie, status: 201
+    else
+      @list.movies.build(movie_params)
+      if @list.save
+        render json: movie, status: 201
+      else
+        render json: {errors: {messages:list.errors.messages}}, status: 422
+      end
+    end
+
+  end
+
 
 
   private
@@ -24,7 +41,7 @@ class API::MoviesController < ApplicationController
   end
 
   def movie_params
-    params.require(:movie).permit()
+    params.require(:movie).permit(:title, :rating, :poster_path, :ext_id)
   end
 
   def set_movie
