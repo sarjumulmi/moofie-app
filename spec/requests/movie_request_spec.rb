@@ -19,8 +19,8 @@ RSpec.describe 'Movies API', type: :request do
           get "/api/lists/#{list_id}/movies", headers: auth_header(user)
         end
 
-        it "responds with a status of 201" do
-          expect(response).to have_http_status(201)
+        it "responds with a status of 200" do
+          expect(response).to have_http_status(200)
         end
         it "responds with a list of movies" do
           movies = JSON.parse(response.body, symbolize_names: true)
@@ -168,44 +168,55 @@ RSpec.describe 'Movies API', type: :request do
 
   end
 
-  # describe 'GET /api/lists/:id' do
-  #   let(:user_attributes) {attributes_for(:user)}
-  #   let!(:user) {User.create(user_attributes)}
-  #   let!(:lists) {create_list(:list, 4, user:user)}
-  #   let(:list_id) {lists[2].id}
-  #
-  #   context 'Authorized user' do
-  #
-  #     before {
-  #       post '/api/user_token', params: {"auth": {"email": user_attributes[:email], "password": "password"}}
-  #       get "/api/lists/#{list_id}", headers: auth_header(user)
-  #     }
-  #
-  #     it "response with a 200 status" do
-  #       expect(response).to have_http_status(200)
-  #     end
-  #     it "returns the list" do
-  #       json = JSON.parse(response.body, symbolize_names: true)
-  #       expect(json[:title]).to eq(lists[2][:title])
-  #     end
-  #
-  #   end
-  #
-  #   context 'UnAuthorized user' do
-  #     before {
-  #       get "/api/lists/#{list_id}"
-  #     }
-  #
-  #     it "returns a status of 401" do
-  #       expect(response).to have_http_status(401)
-  #     end
-  #     it "returns an error message" do
-  #       json = JSON.parse(response.body, symbolize_names: true)
-  #       expect(json[:errors][:messages]).to eq(["User is Unauthorized"])
-  #     end
-  #
-  #   end
-  #
-  # end
+  describe 'GET /api/lists/:list_id/movies/id' do
+
+    context 'Authenticated user' do
+
+      let(:user_attributes) {attributes_for(:user)}
+      let!(:user) {User.create(user_attributes)}
+      let!(:list) {create(:list_with_movies, user:user)}
+      let (:list_id) {list.id}
+      let (:id) {list.movies.first.id}
+
+      context "Authorized user" do
+
+        before(:each) do
+          post '/api/user_token', params: {"auth": {"email": user_attributes[:email], "password": "password"}}
+          get "/api/lists/#{list_id}/movies/#{id}", headers: auth_header(user)
+        end
+
+        it "responds with a status of 200" do
+          expect(response).to have_http_status(200)
+        end
+
+        it "returns the movie as JSON" do
+          json = JSON.parse(response.body, symbolize_names: true)
+          expect(json[:title]).to eq(list.movies.first[:title])
+        end
+
+      end
+
+      context "UnAuthorized user" do
+
+        let(:user2_attributes) {attributes_for(:user)}
+        let!(:user2) {User.create(user2_attributes)}
+        before(:each) do
+          post '/api/user_token', params: {"auth": {"email": user2_attributes[:email], "password": "password"}}
+          get "/api/lists/#{list_id}/movies/#{id}", headers: auth_header(user2)
+        end
+
+        it "returns a status of 403" do
+          expect(response).to have_http_status(403)
+        end
+        it "returns an error message" do
+          json = JSON.parse(response.body, symbolize_names: true)
+          expect(json[:errors][:messages]).to eq(["User not authorized"])
+        end
+
+      end
+
+    end
+
+  end
 
 end

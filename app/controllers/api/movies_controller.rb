@@ -5,7 +5,7 @@ class API::MoviesController < ApplicationController
   def index
     movies = @list.movies
     if !movies.empty?
-      render json: movies, status: 201
+      render json: movies, status: 200
     else
       render json: [], status: 200
     end
@@ -13,7 +13,6 @@ class API::MoviesController < ApplicationController
 
   def create
     movie = Movie.find_or_initialize_by(ext_id: params[:movie][:ext_id])
-    # binding.pry
     if movie.id
       @list.movies<<movie
       render json: movie, status: 201
@@ -28,7 +27,13 @@ class API::MoviesController < ApplicationController
 
   end
 
-
+  def show
+    if @movie
+      render json:@movie, status: 200
+    else
+      render json: {errors: {messages:["Not Found"]}}, status: 404
+    end
+  end
 
   private
 
@@ -45,7 +50,7 @@ class API::MoviesController < ApplicationController
   end
 
   def set_movie
-    @movie = List.find(params[:id])
+    @movie = Movie.find(params[:id])
   end
 
 
