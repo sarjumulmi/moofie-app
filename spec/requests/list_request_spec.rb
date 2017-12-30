@@ -15,8 +15,8 @@ RSpec.describe 'Lists API', type: :request do
         get '/api/lists', headers: auth_header(user1)
       end
 
-      it "responds with a status of 201" do
-        expect(response).to have_http_status(201)
+      it "responds with a status of 200" do
+        expect(response).to have_http_status(200)
       end
       it "responds with a list of lists" do
         lists = JSON.parse(response.body, symbolize_names: true)
@@ -171,7 +171,7 @@ RSpec.describe 'Lists API', type: :request do
         json = JSON.parse(response.body, symbolize_names: true)
         expect(json[:errors][:messages]).to eq(["User is Unauthorized"])
       end
-      
+
     end
 
   end

@@ -5,7 +5,7 @@ class API::ListsController < ApplicationController
   def index
     lists = List.where('user_id=?', current_user)
     if !lists.empty?
-      render json: lists, status: 201
+      render json: lists, status: 200
     else
       render json: [], status: 200
     end
@@ -24,6 +24,8 @@ class API::ListsController < ApplicationController
   def show
     if @list
       render json: @list, status: 200
+    else
+      render json: {errors: {messages:["Not Found"]}}, status: 404
     end
   end
 
