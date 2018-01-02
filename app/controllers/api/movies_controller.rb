@@ -1,4 +1,5 @@
 class API::MoviesController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :authenticate_user, :set_list, :authenticate_current_user
   before_action :set_movie, only: [:show]
 
