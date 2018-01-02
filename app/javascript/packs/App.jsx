@@ -1,7 +1,13 @@
 import React from 'react'
+import { Route } from 'react-router-dom'
+import Home from './views/home/'
+import Navbar from './views/navbar/'
 
 const App = () => (
-  <h1>Hello World, Y'all!!!!!</h1>
+  <div>
+    <Navbar />
+    <Route exact path='/' component={Home} />
+  </div>
 )
 
 export default App
