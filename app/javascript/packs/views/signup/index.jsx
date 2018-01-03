@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 import { handleError, setErrors, formatErrorMessages } from './../../client'
 import isEmpty from 'lodash/isEmpty'
+import { userSignupRequest } from './../../actions/signupActions';
 
 class SignupForm extends Component {
   constructor (props) {
@@ -34,20 +37,9 @@ class SignupForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     this.setState({errors: {}, isLoading: true, displaySuccessMsg:false})
-
-    const userData = this.state.user
-    const request = {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({user: userData})
-    }
-    fetch('/api/signup', request)
+    this.props.userSignupRequest(this.state.user)
       .then((response) => handleError(response))
       .then((user) => {
-        console.log("user: ", user)
         this.setState({
           isLoading:false,
           displaySuccessMsg:true,
@@ -66,14 +58,12 @@ class SignupForm extends Component {
                 isLoading:false,
                 errors
               })
-              console.log(this.state)
           })
       )
 
   }
 
   render () {
-    // console.log(this.state)
     return (
       <div style={{ height: '100%', width:'40%', margin: '0 auto' }}>
         <Form size='tiny' onSubmit={this.handleSubmit} loading={this.state.isLoading} success={this.state.displaySuccessMsg} error={!this.isSuccess()}>
@@ -125,4 +115,8 @@ class SignupForm extends Component {
   }
 }
 
-export default SignupForm
+SignupForm.propTypes = {
+  userSignupRequest: PropTypes.func.isRequired
+}
+
+export default connect(null, {userSignupRequest})(SignupForm)
