@@ -1,21 +1,36 @@
-import React from 'react'
-// import { isLoggedIn } from './../../client'
-import {Route, Link} from 'react-router-dom'
-import SignupForm from './../signup'
+import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
+import { connect } from 'react-redux'
 
-const Navbar = () => (
-  <div>
-    <nav>
-      <Link to='/'>Home</Link>
-      <Link to='/login'>Login</Link>
-      <Link to='/signup'>Sign Up</Link>
-    </nav>
-    <Route path='/signup' component={SignupForm} />
-    <Route path='/login' render={() => (
+class Navbar extends Component {
+  render () {
+    const userLinks = (
       <div>
-        Login Form
+        <Link to='/'>Home</Link>
+        <Link to='/logout'>Logout</Link>
       </div>
-      )} />
-  </div>
-)
-export default Navbar
+    )
+    const guestLinks = (
+      <div>
+        <Link to='/'>Home</Link>
+        <Link to='/signup'>Sign Up</Link>
+        <Link to='/login'>Login</Link>
+      </div>
+    )
+    const {isAuthenticated} = this.props.auth
+    return (
+      <div>
+        <nav>
+          {isAuthenticated ? userLinks : guestLinks}
+        </nav>
+      </div>
+    )
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  }
+}
+export default connect(mapStateToProps)(Navbar)
