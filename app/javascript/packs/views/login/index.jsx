@@ -21,6 +21,32 @@ class LoginForm extends Component {
     }
   }
 
+  onChange = (e) => {
+    const {name, value} = e.target
+    this.setState({
+      auth: {...this.state.auth, [name]: value}
+    })
+  }
+  isSuccess = () => {
+    const success = isEmpty(this.state.errors)
+    return success
+  }
+  handleSubmit = (e) => {
+    e.preventDefault()
+    this.setState({errors: {}, isLoading: true, displaySuccessMsg:false})
+    this.props.login(this.state.auth)
+      .then(
+        (response) => {
+          this.setState({isLoading: false, displaySuccessMsg:true})
+        }
+      )
+      .catch((err) => {
+        const errors = setErrors(err.response.data)
+        this.setState({isLoading: false, errors})
+      })
+
+    }
+
   render () {
     return (
       <div style={{ height: '100%', width: '40%', margin: '0 auto' }}>
