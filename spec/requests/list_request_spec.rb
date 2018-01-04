@@ -11,7 +11,7 @@ RSpec.describe 'Lists API', type: :request do
       let!(:lists1) {create_list(:list, 4, user:user1)}
       let!(:lists2) {create_list(:list, 2, user:user2)}
       before(:each) do
-        post '/api/user_token', params: {"auth": {"email": user_attributes1[:email], "password": "password"}}
+        post '/api/user_token', params: {"auth": {"identifier": user_attributes1[:email], "password": "password"}}
         get '/api/lists', headers: auth_header(user1)
       end
 
@@ -62,7 +62,7 @@ RSpec.describe 'Lists API', type: :request do
         }
 
         before {
-          post '/api/user_token', params: {"auth": {"email": user_attributes[:email], "password": "password"}}
+          post '/api/user_token', params: {"auth": {"identifier": user_attributes[:email], "password": "password"}}
           post '/api/lists', headers: auth_header(user), params: list_attributes
         }
 
@@ -91,7 +91,7 @@ RSpec.describe 'Lists API', type: :request do
           }
         }
         before {
-          post '/api/user_token', params: {"auth": {"email": user_attributes[:email], "password": "password"}}
+          post '/api/user_token', params: {"auth": {"identifier": user_attributes[:email], "password": "password"}}
           post '/api/lists', headers: auth_header(user), params: list_attributes
         }
         it "returns status code of 422" do
@@ -145,7 +145,7 @@ RSpec.describe 'Lists API', type: :request do
     context 'Authorized user' do
 
       before {
-        post '/api/user_token', params: {"auth": {"email": user_attributes[:email], "password": "password"}}
+        post '/api/user_token', params: {"auth": {"identifier": user_attributes[:email], "password": "password"}}
         get "/api/lists/#{list_id}", headers: auth_header(user)
       }
 

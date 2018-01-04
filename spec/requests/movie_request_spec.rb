@@ -11,7 +11,7 @@ RSpec.describe 'Movies API', type: :request do
       let(:movies){:list.movies}
 
       before(:each) do
-        post '/api/user_token', params: {"auth": {"email": user_attributes[:email], "password": "password"}}
+        post '/api/user_token', params: {"auth": {"identifier": user_attributes[:email], "password": "password"}}
       end
 
       context "Authorized user" do
@@ -91,7 +91,7 @@ RSpec.describe 'Movies API', type: :request do
         context "New movie" do
 
           before(:each) do
-            post '/api/user_token', params: {"auth": {"email": user_attributes[:email], "password": "password"}}
+            post '/api/user_token', params: {"auth": {"identifier": user_attributes[:email], "password": "password"}}
           end
 
           before do
@@ -150,7 +150,7 @@ RSpec.describe 'Movies API', type: :request do
           }
         }
         before(:each) do
-          post '/api/user_token', params: {"auth": {"email": user_attributes[:email], "password": "password"}}
+          post '/api/user_token', params: {"auth": {"identifier": user_attributes[:email], "password": "password"}}
           post "/api/lists/#{list_id}/movies", headers: auth_header(user), params: movie_attributes
         end
 
@@ -181,7 +181,7 @@ RSpec.describe 'Movies API', type: :request do
       context "Authorized user" do
 
         before(:each) do
-          post '/api/user_token', params: {"auth": {"email": user_attributes[:email], "password": "password"}}
+          post '/api/user_token', params: {"auth": {"identifier": user_attributes[:email], "password": "password"}}
           get "/api/lists/#{list_id}/movies/#{id}", headers: auth_header(user)
         end
 
@@ -201,7 +201,7 @@ RSpec.describe 'Movies API', type: :request do
         let(:user2_attributes) {attributes_for(:user)}
         let!(:user2) {User.create(user2_attributes)}
         before(:each) do
-          post '/api/user_token', params: {"auth": {"email": user2_attributes[:email], "password": "password"}}
+          post '/api/user_token', params: {"auth": {"identifier": user2_attributes[:email], "password": "password"}}
           get "/api/lists/#{list_id}/movies/#{id}", headers: auth_header(user2)
         end
 

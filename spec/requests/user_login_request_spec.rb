@@ -6,7 +6,7 @@ RSpec.describe 'User signup API', type: :request do
     let!(:user) {User.create(valid_user_attributes)}
 
     context 'valid login' do
-      before {post '/api/user_token', params: {"auth": {"email": valid_user_attributes[:email], "password": "password"}}}
+      before {post '/api/user_token', params: {"auth": {"identifier": valid_user_attributes[:email], "password": "password"}}}
 
       it "responds with a status 201" do
         expect(response).to have_http_status(201)
@@ -23,14 +23,14 @@ RSpec.describe 'User signup API', type: :request do
     end
 
     context 'invalid login' do
-      before {post '/api/user_token', params: {"auth": {"email": valid_user_attributes[:email], "password": "1234"}}}
+      before {post '/api/user_token', params: {"auth": {"identifier": valid_user_attributes[:email], "password": "1234"}}}
 
       it "responds with a status 404" do
         expect(response).to have_http_status(404)
       end
       it "returns an error message" do
         json = JSON.parse(response.body, symbolize_names: true)
-        expect(json[:errors][:messages]).to eq(["Invalid credentials"])
+        expect(json[:errors][:messages][:error]).to eq(["Invalid credentials"])
       end
     end
 

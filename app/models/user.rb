@@ -8,9 +8,8 @@ class User < ApplicationRecord
 
   def self.from_token_request request
     # Returns a valid user, `nil` or raise `Knock.not_found_exception_class_name`
-    email = request.params["auth"] && request.params["auth"]["email"]
-    username = request.params["auth"] && request.params["auth"]["username"]
-    self.where(email: email).or(self.where(username: username))[0]
+    identifier = request.params["auth"] && request.params["auth"]["identifier"]
+    self.where(email: identifier).or(self.where(username: identifier))[0]
   end
 
   # change payload structure to be sent as Authorization header to {user: {userId: , username: , email: }}
