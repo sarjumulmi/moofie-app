@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export function isLoggedIn () {
   return true
 }
@@ -23,4 +25,12 @@ export function setErrors (errMsg) {
 export function formatErrorMessages (errors) {
   const errorMessage = Object.values(errors).map(msg => msg).join('. ')
   return errorMessage
+}
+
+export function setAuthorizationToken (token) {
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  } else {
+    delete axios.defaults.headers.common['Authorization']
+  }
 }
