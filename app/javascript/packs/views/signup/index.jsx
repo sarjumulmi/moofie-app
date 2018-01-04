@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 import { handleError, setErrors, formatErrorMessages } from './../../client'
 import isEmpty from 'lodash/isEmpty'
-import { userSignupRequest } from './../../actions/signupActions';
+import { userSignupRequest } from './../../actions/signupActions'
 
 class SignupForm extends Component {
   constructor (props) {
@@ -65,7 +65,7 @@ class SignupForm extends Component {
 
   render () {
     return (
-      <div style={{ height: '100%', width:'40%', margin: '0 auto' }}>
+      <div style={{ height: '100%', width: '40%', margin: '0 auto' }}>
         <Form size='tiny' onSubmit={this.handleSubmit} loading={this.state.isLoading} success={this.state.displaySuccessMsg} error={!this.isSuccess()}>
           <Segment stacked>
             <Form.Input fluid required
