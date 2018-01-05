@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import Home from './views/home/'
 import Navbar from './views/navbar/'
 import SignupForm from './views/signup'
@@ -9,10 +9,12 @@ import LogoutForm from './views/logout'
 const App = () => (
   <div>
     <Navbar />
-    <Route exact path='/' component={Home} />
-    <Route path='/signup' component={SignupForm} />
-    <Route path='/login' component={LoginForm} />
-    <Route path='/logout' component={LogoutForm} />
+    <Switch>
+      <Route path='/signup' component={SignupForm} />
+      <Route path='/login' component={LoginForm} />
+      <Route path='/logout' component={LogoutForm} />
+      <Route path='/' component={Home} />
+    </Switch>
   </div>
 )
 
