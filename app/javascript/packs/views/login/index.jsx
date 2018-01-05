@@ -16,8 +16,7 @@ class LoginForm extends Component {
         password: ''
       },
       isLoading: false,
-      errors: {},
-      displaySuccessMsg: false
+      errors: {}
     }
   }
 
@@ -27,24 +26,18 @@ class LoginForm extends Component {
       auth: {...this.state.auth, [name]: value}
     })
   }
-  isSuccess = () => {
-    const success = isEmpty(this.state.errors)
-    return success
-  }
   handleSubmit = (e) => {
     e.preventDefault()
-    this.setState({errors: {}, isLoading: true, displaySuccessMsg:false})
+    this.setState({errors: {}, isLoading: true})
     this.props.login(this.state.auth)
       .then(
         (response) => {
-          this.setState({isLoading: false, displaySuccessMsg:true})
         }
       )
       .catch((err) => {
         const errors = setErrors(err.response.data)
         this.setState({isLoading: false, errors})
       })
-
     }
 
   render () {
@@ -56,7 +49,7 @@ class LoginForm extends Component {
     } else {
       return (
         <div style={{ height: '100%', width: '40%', margin: '0 auto' }}>
-          <Form onSubmit={this.handleSubmit} loading={this.state.isLoading} success={this.state.displaySuccessMsg} error={!this.isSuccess()}>
+          <Form onSubmit={this.handleSubmit} loading={this.state.isLoading} error={!isEmpty(this.state.errors)}>
             <Segment stacked>
               <Form.Input fluid required
                 label='Username/Email'
@@ -75,11 +68,6 @@ class LoginForm extends Component {
                 error
                 header='Error'
                 content= {formatErrorMessages(this.state.errors)}
-              />
-              <Message
-                success
-                header='Success!!'
-                content= 'Successfully Logged In!!'
               />
               <Button color='teal' fluid disabled={false}>Submit</Button>
             </Segment>
