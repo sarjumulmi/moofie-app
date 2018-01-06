@@ -1,8 +1,10 @@
 import axios from 'axios'
 
-export function isLoggedIn () {
-  return true
-}
+export const MOVIE_DB_BASE_URL_MOVIE = 'https://api.themoviedb.org/3/search/movie?api_key='
+
+export const MOVIE_DB_POSTER_BASE_URL = 'https://image.tmdb.org/t/p/w92'
+
+// export const MOVIE_DB_POSTER_SIZES = ['w92', 'w154', 'w185', 'w342', 'w500', 'w780', 'original']
 
 export function handleError (response) {
   if (!response.ok) {
@@ -33,4 +35,16 @@ export function setAuthorizationToken (token) {
   } else {
     delete axios.defaults.headers.common['Authorization']
   }
+}
+
+export function formatMovies (movieResults) {
+  let formattedMovies = {}
+  movieResults.forEach(movie => {
+    formattedMovies[movie.id] = {
+      title: movie.title,
+      poster_path: `${MOVIE_DB_POSTER_BASE_URL}${movie.poster_path}`,
+      rating: movie.vote_average
+    }
+  })
+  return formattedMovies
 }

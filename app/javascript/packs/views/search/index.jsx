@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Grid } from 'semantic-ui-react'
+import { Form, Grid } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 
 class SearchBar extends Component {
@@ -14,7 +14,9 @@ class SearchBar extends Component {
       <div style={{margin: '0 0 0 20px'}}>
         <Grid>
           <Grid.Column width={8}>
-            <Input fluid icon='search' placeholder='Search Movies...' size='huge' value={this.props.queryTerm} onChange={this.props.onChange} />
+            <Form onSubmit={this.props.onSubmit}>
+              <Form.Input fluid icon='search' loading={this.props.loading} placeholder='Search Movies...' size='huge' value={this.props.queryTerm} onChange={this.props.onChange} />
+            </Form>
           </Grid.Column>
         </Grid>
       </div>
