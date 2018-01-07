@@ -42,7 +42,7 @@ class LoginForm extends Component {
 
   render () {
     if (this.props.isAuthenticated) {
-      const from = (this.props.location.state && this.props.location.state.from) || '/'
+      const from = (this.props.location.state && this.props.location.state.from) || '/movies'
       return (
         <Redirect to={from} />
       )

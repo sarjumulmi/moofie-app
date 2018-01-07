@@ -10,7 +10,7 @@ class LogoutForm extends Component {
   }
   render () {
     return (
-      <Redirect to='/' />
+      <Redirect to='/movies' />
     )
   }
 }

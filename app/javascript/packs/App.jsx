@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import Home from './views/home/'
 import Navbar from './views/navbar/'
 import SignupForm from './views/signup'
@@ -13,7 +13,10 @@ const App = () => (
       <Route path='/signup' component={SignupForm} />
       <Route path='/login' component={LoginForm} />
       <Route path='/logout' component={LogoutForm} />
-      <Route path='/' component={Home} />
+      <Route path='/movies' component={Home} />
+      <Route path='/' render={() => (
+        <Redirect to='/movies' />
+        )} />
     </Switch>
   </div>
 )
