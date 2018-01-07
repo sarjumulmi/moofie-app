@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import SearchBar from './../search/'
 import MovieLinkList from './../movieLinkList/'
-import { Message, Header, Grid } from 'semantic-ui-react'
+import MovieDetail from './../movieLinkList/movieDetail'
+import { Message, Header, Grid, Item } from 'semantic-ui-react'
 import {connect} from 'react-redux';
 import { getMovies } from './../../actions/searchActions';
 import isEmpty from 'lodash/isEmpty'
@@ -54,15 +55,20 @@ class Home extends Component {
           />
         {!!this.state.errors ? <Message compact warning={!!this.state.errors} header='Error' content={this.state.errors} /> : null}
         <Grid>
-          <Grid.Column width={6}>
+          <Grid.Column width={2}>
             <MovieLinkList movies={this.state.movies} moviePath={matchPath} />
           </Grid.Column>
-          <Grid.Column width={10}>
+          <Grid.Column width={14}>
             <Route path={`${matchPath}/:movieId`} render={({match}) => {
                 const movieId = match.params.movieId
-                const movie = this.state.movies.movieId
+                const movie = this.state.movies[movieId]
                 return (
-                  <div>{this.state.movies[movieId].title}</div>
+                  <Item style={{padding: '0.785714em 0.928571em'}}>
+                    {this.state.movies[movieId] ?
+                      <MovieDetail matchPath={matchPath} movie={movie} movieId={movieId} /> :
+                      <Header as='h3'>No Matching Movie Found!!</Header>
+                    }
+                  </Item>
                 )
               }}
             />
