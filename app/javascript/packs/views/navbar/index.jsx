@@ -15,7 +15,7 @@ class Navbar extends Component {
     const {activeItem} = this.state
     const userLinks = (
       <Menu size='large' inverted fixed='top' style={{height: '65px'}}>
-        <Menu.Item as={Link} to='/' active={activeItem==='home'} name='home' onClick={this.handleItemClick}>Home</Menu.Item>
+        <Menu.Item as={Link} to='/' active={activeItem==='home'} name='home' onClick={this.handleItemClick}>MooFie!!</Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item as={Link} to='/logout' active={activeItem==='logout'} name='logout' position='right' onClick={this.handleItemClick}>Logout</Menu.Item>
         </Menu.Menu>
