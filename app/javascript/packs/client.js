@@ -1,4 +1,5 @@
 import axios from 'axios'
+import posterPath from './public/images/default-pic.jpg'
 
 export const MOVIE_DB_BASE_URL_MOVIE = 'https://api.themoviedb.org/3/search/movie?api_key='
 
@@ -42,7 +43,7 @@ export function formatMovies (movieResults) {
   movieResults.forEach(movie => {
     formattedMovies[movie.id] = {
       title: movie.title,
-      poster_path: `${MOVIE_DB_POSTER_BASE_URL}${movie.poster_path}`,
+      poster_path: movie.poster_path ? `${MOVIE_DB_POSTER_BASE_URL}${movie.poster_path}` : `${posterPath}`,
       rating: movie.vote_average
     }
   })
