@@ -1,22 +1,27 @@
 import React, {Component} from 'react'
-import { Image, Container, Grid } from 'semantic-ui-react'
-import { NavLink } from 'react-router-dom'
+import { Image, Menu } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 class MovieLink extends Component {
   constructor (props) {
     super(props)
+    this.state = {
+      activeItem: ''
+    }
   }
+  handleItemClick = (e) => {
+    this.props.handleItemClick(e)
+  }
+
   render () {
+    const {moviePath, movieId, active, movie} = this.props
     return (
-      <Grid style={{margin: '0 0 0 20px'}}>
-        <Grid.Column width={6}>
-          <Container>
-            <NavLink to={`${this.props.moviePath}/${this.props.movieId}`}>
-              <Image src={this.props.movie.poster_path} size='tiny' rounded />
-            </NavLink>
-          </Container>
-        </Grid.Column>
-      </Grid>
+      <Menu.Item as={Link} to={`${moviePath}/${movieId}`}
+        active={active}
+        onClick={this.handleItemClick}
+        style={active ? {background: 'rgba(33,150,243,.4)'} : null}>
+        <Image src={movie.poster_path} size='tiny' name={`movie-${movieId}`} rounded/>
+      </Menu.Item>
     )
   }
 }
