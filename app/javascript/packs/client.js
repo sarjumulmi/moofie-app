@@ -2,10 +2,8 @@ import axios from 'axios'
 import posterPath from './public/images/default-pic.jpg'
 
 export const MOVIE_DB_BASE_URL_MOVIE = 'https://api.themoviedb.org/3/search/movie?api_key='
-
+export const MOVIE_DB_DETAIL_URL = 'https://api.themoviedb.org/3/movie/'
 export const MOVIE_DB_POSTER_BASE_URL = 'https://image.tmdb.org/t/p/w92'
-
-// export const MOVIE_DB_POSTER_SIZES = ['w92', 'w154', 'w185', 'w342', 'w500', 'w780', 'original']
 
 export function handleError (response) {
   if (!response.ok) {
@@ -38,14 +36,22 @@ export function setAuthorizationToken (token) {
   }
 }
 
-export function formatMovies (movieResults) {
+export function formatMovies (results) {
   let formattedMovies = {}
-  movieResults.forEach(movie => {
+  results.forEach(result => {
+    let movie = result.data
     formattedMovies[movie.id] = {
       title: movie.title,
       poster_path: movie.poster_path ? `${MOVIE_DB_POSTER_BASE_URL}${movie.poster_path}` : `${posterPath}`,
-      rating: movie.vote_average
+      rating: movie.vote_average,
+      genres: getInnerProperties(movie, 'genres'),
+      overview: movie.overview
     }
-  })
+  }
+  )
   return formattedMovies
+}
+
+function getInnerProperties (movie, property) {
+  return (movie[property].map(property => property.name).join(', ') || 'Not found')
 }

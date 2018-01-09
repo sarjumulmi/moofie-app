@@ -4,7 +4,7 @@ import MovieLinkList from './../movieLinkList/'
 import MovieDetail from './../movieLinkList/movieDetail'
 import { Message, Header, Grid, Item } from 'semantic-ui-react'
 import {connect} from 'react-redux';
-import { getMovies } from './../../actions/searchActions';
+import { getMovies, getMovieDetails } from './../../actions/searchActions';
 import isEmpty from 'lodash/isEmpty'
 import axios from 'axios'
 import { Route } from 'react-router-dom';
@@ -28,24 +28,25 @@ class Home extends Component {
   onSubmit = (e) => {
     e.preventDefault()
     this.props.history.push('/movies')
-    this.setState({errors:'', movies:{}})
-    this.props.getMovies(this.state.queryTerm).then(
+    this.setState({errors:''})
+    this.props.getMovieDetails(this.state.queryTerm).then(
       data => {
         if (isEmpty(data)) {
           this.setState({isLoading: false, errors: 'No results found. Please try again!!'})
         } else {
-          this.setState({isLoading: false, errors: '', movies: data})
+        this.setState({isLoading: false, errors: '', movies: data})
         }
       }
-    ).catch((err) => {
-      this.setState({isLoading: false, errors: 'No results found. Please try again!!'})
+    )
+    .catch((err) => {
+      this.setState({isLoading: false, errors: 'Something went wrong. Please try again!!'})
     })
   }
 
   render () {
     const matchPath = this.props.match.path
     return (
-      <div style={{margin: '0 0 0 10px'}}>
+      <div style={{margin: '0 0 0 30px'}}>
         <Header as='h3'>Recent Movies having API {process.env.MOVIE_DB_API_KEY} {process.env.NODE_ENV} environment.</Header>
         <SearchBar
           queryTerm={this.state.queryTerm}
@@ -53,7 +54,14 @@ class Home extends Component {
           onChange={this.onChange}
           loading={!!this.state.queryTerm && this.state.isLoading}
           />
-        {!!this.state.errors ? <Message compact warning={!!this.state.errors} header='Error' content={this.state.errors} /> : null}
+        {!!this.state.errors ?
+          <Message
+            compact
+            warning={!!this.state.errors}
+            header='Error'
+            content={this.state.errors}
+          /> :
+        null}
         <Grid>
           <Grid.Column width={2}>
             <MovieLinkList movies={this.state.movies} moviePath={matchPath} />
@@ -79,4 +87,4 @@ class Home extends Component {
   }
 }
 
-export default connect(null, {getMovies})(Home)
+export default connect(null, {getMovies, getMovieDetails})(Home)
