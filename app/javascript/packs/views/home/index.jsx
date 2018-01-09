@@ -21,14 +21,13 @@ class Home extends Component {
   }
   onChange = (e) => {
     this.setState({
-      queryTerm: e.target.value,
-      isLoading:true
+      queryTerm: e.target.value
     })
   }
   onSubmit = (e) => {
     e.preventDefault()
-    this.props.history.push('/movies')
-    this.setState({errors:''})
+    this.props.history.push(this.props.match.path)
+    this.setState({errors:'', isLoading: true})
     this.props.getMovieDetails(this.state.queryTerm).then(
       data => {
         if (isEmpty(data)) {
@@ -45,9 +44,9 @@ class Home extends Component {
 
   render () {
     const matchPath = this.props.match.path
+  
     return (
       <div style={{margin: '0 0 0 30px'}}>
-        <Header as='h3'>Recent Movies having API {process.env.MOVIE_DB_API_KEY} {process.env.NODE_ENV} environment.</Header>
         <SearchBar
           queryTerm={this.state.queryTerm}
           onSubmit={this.onSubmit}
@@ -62,16 +61,16 @@ class Home extends Component {
             content={this.state.errors}
           /> :
         null}
-        <Grid>
-          <Grid.Column width={2}>
+        <Grid divided={!isEmpty(this.state.movies)}>
+          <Grid.Column width={4} >
             <MovieLinkList movies={this.state.movies} moviePath={matchPath} />
           </Grid.Column>
-          <Grid.Column width={14}>
+          <Grid.Column width={12} style={{overflow: 'visible'}}>
             <Route path={`${matchPath}/:movieId`} render={({match}) => {
                 const movieId = match.params.movieId
                 const movie = this.state.movies[movieId]
                 return (
-                  <Item style={{padding: '0.785714em 0.928571em'}}>
+                  <Item style={{padding: '0.785714em 0.928571em', paddingTop: '0.3em', position: 'sticky', top: '70px'}}>
                     {this.state.movies[movieId] ?
                       <MovieDetail matchPath={matchPath} movie={movie} movieId={movieId} /> :
                       <Header as='h3'>No Matching Movie Found!!</Header>

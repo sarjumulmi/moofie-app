@@ -1,28 +1,27 @@
-import React, { Component } from 'react'
-import { Form, Grid } from 'semantic-ui-react'
+import React from 'react'
+import { Form, Grid, Icon, Header } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 
-class SearchBar extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-    }
-  }
-
-  render () {
-    return (
-      <div style={{margin: '0 0 0 20px'}}>
-        <Grid>
-          <Grid.Column width={8}>
-            <Form onSubmit={this.props.onSubmit}>
-              <Form.Input fluid icon='search' loading={this.props.loading} placeholder='Search Movies...' size='huge' value={this.props.queryTerm} onChange={this.props.onChange} />
-            </Form>
-          </Grid.Column>
-        </Grid>
-      </div>
-    )
-  }
-}
+const SearchBar = (props) => (
+  <div >
+    <Grid>
+      <Grid.Column width={13} style={{margin: 'auto'}}>
+        <Header as='h3' textAlign='center'>MooFie Search</Header>
+        <Form onSubmit={props.onSubmit} loading={props.loading} style={{marginBottom: '12px'}}>
+          <Form.Input fluid
+            icon
+            placeholder='Search Movies...'
+            size='huge'
+            value={props.queryTerm}
+            onChange={props.onChange} >
+            <input />
+            <Icon name='search' inverted circular link onClick={props.onSubmit} />
+          </Form.Input>
+        </Form>
+      </Grid.Column>
+    </Grid>
+  </div>
+)
 
 SearchBar.propTypes = {
   onChange: PropTypes.func.isRequired,

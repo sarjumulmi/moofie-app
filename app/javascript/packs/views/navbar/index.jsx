@@ -23,7 +23,7 @@ class Navbar extends Component {
     )
     const guestLinks = (
       <Menu size='large' inverted fixed='top' style={{height: '65px'}}>
-        <Menu.Item as={Link} to='/' active={activeItem==='home'} name='home' onClick={this.handleItemClick}>Home</Menu.Item>
+        <Menu.Item as={Link} to='/' active={activeItem==='home'} name='home' onClick={this.handleItemClick}>MooFie!!</Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item as={Link} to='/signup' active={activeItem==='signup'} name='signup' position='right' onClick={this.handleItemClick}>Sign Up</Menu.Item>
           <Menu.Item as={Link} to='/login' active={activeItem==='login'} name='login' position='right' onClick={this.handleItemClick}>Login</Menu.Item>
@@ -33,7 +33,7 @@ class Navbar extends Component {
     const {isAuthenticated} = this.props.auth
     return (
       <Container>
-        <div style={{margin: '0 0 100px'}}>
+        <div style={{margin: '0 0 80px'}}>
           {isAuthenticated ? userLinks : guestLinks}
         </div>
       </Container>

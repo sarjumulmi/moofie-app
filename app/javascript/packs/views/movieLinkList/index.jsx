@@ -26,7 +26,7 @@ class MovieLinkList extends Component {
     }
     return (
       <div>
-        <Menu vertical icon secondary style={{margin: '0 0 0 20px'}}>
+        <Menu vertical icon secondary >
           {movies}
         </Menu>
       </div>

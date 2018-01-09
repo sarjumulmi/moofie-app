@@ -1,25 +1,17 @@
-import React, { Component } from 'react'
-import { Header } from 'semantic-ui-react'
+import React from 'react'
+import {Segment} from 'semantic-ui-react'
 
-class MovieDetail extends Component {
-  constructor (props) {
-    super(props)
-  }
-  render () {
-    return (
-      <div>
-        <Header as='h2'>{this.props.movie.title}</Header>
-        <Header as='h4'>Rating</Header>
-        <p>{this.props.movie.rating}/10.0</p>
-        <Header as='h4'>Genres</Header>
-        <p>{this.props.movie.genres}</p>
-        <Header as='h4'>Imdb Synopsis: </Header>
-        <p>
-          {this.props.movie.overview}
-        </p>
-      </div>
-    )
-  }
-}
+const MovieDetail = ({movie}) => (
+  <Segment style={{width: '70%', backgroundColor: '#03a9f414'}}>
+    <h2 style={{marginTop: '0', marginBottom: '0'}}>{movie.title}</h2>
+    <p><small> - {movie.tagline}</small></p>
+    <h3 style={{marginTop: '0', marginBottom: '0'}}>Overview: </h3>
+    <p>{movie.overview}</p>
+    <h4 style={{marginTop: '0', marginBottom: '0'}}>Rating</h4>
+    <p>{movie.rating}/10.0</p>
+    <h4 style={{marginTop: '0', marginBottom: '0'}}>Production Companies: </h4>
+    <p>{movie.production_companies}</p>
+  </Segment>
+)
 
 export default MovieDetail

@@ -42,16 +42,21 @@ export function formatMovies (results) {
     let movie = result.data
     formattedMovies[movie.id] = {
       title: movie.title,
+      tagline: movie.tagline,
+      url: movie.homepage,
       poster_path: movie.poster_path ? `${MOVIE_DB_POSTER_BASE_URL}${movie.poster_path}` : `${posterPath}`,
       rating: movie.vote_average,
-      genres: getInnerProperties(movie, 'genres'),
-      overview: movie.overview
+      genres: getInnerProperties(movie, 'genres', ' | '),
+      overview: movie.overview,
+      release_year: movie.release_date.slice(0, 4) || 'Unreleased',
+      production_companies: getInnerProperties(movie, 'production_companies', '/'),
+      runtime: `${movie.runtime} mins`
     }
   }
   )
   return formattedMovies
 }
 
-function getInnerProperties (movie, property) {
-  return (movie[property].map(property => property.name).join(', ') || 'Not found')
+function getInnerProperties (movie, property, separator) {
+  return (movie[property].map(property => property.name).join(separator) || 'Not found')
 }
