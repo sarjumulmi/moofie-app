@@ -1,14 +1,9 @@
 import React, {Component} from 'react'
-import { Image, Menu, Header } from 'semantic-ui-react'
+import { Image, Menu, Header, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 class MovieLink extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      activeItem: ''
-    }
-  }
+
   handleItemClick = (e) => {
     this.props.handleItemClick(e)
   }
@@ -28,12 +23,13 @@ class MovieLink extends Component {
               </Menu.Item>
             </td>
             <td>
-              <Header as='h3'>{movie.title}</Header>
-              <p>{movie.release_year} </p>
-              <p>{movie.genres} </p>
+              <Header as='h3' style={{marginTop: '0', marginBottom: '5px'}}>{movie.title}</Header>
+              <p style={{marginTop: '0', marginBottom: '5px'}}>{movie.release_year} </p>
+              <p style={{marginTop: '0', marginBottom: '5px'}}>{movie.genres} </p>
+              <span><Icon link name='add' size='large' color='blue' onClick={()=>alert('hiiii!!')}/>Add to List</span>
             </td>
           </tr>
-        </tbody>  
+        </tbody>
       </table>
 
     )

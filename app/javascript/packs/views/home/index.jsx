@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
 import SearchBar from './../search/'
-import MovieLinkList from './../movieLinkList/'
-import MovieDetail from './../movieLinkList/movieDetail'
+import MovieLinkList from './../movies/movieLinkList'
+import MovieDetail from './../movies/movieDetail'
 import { Message, Header, Grid, Item } from 'semantic-ui-react'
 import {connect} from 'react-redux';
-import { getMovies, getMovieDetails } from './../../actions/searchActions';
+import { getMovies, getMovieDetails } from './../../actions/searchActions'
 import isEmpty from 'lodash/isEmpty'
 import axios from 'axios'
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router-dom'
 
 class Home extends Component {
   constructor (props) {
@@ -31,7 +31,7 @@ class Home extends Component {
     this.props.getMovieDetails(this.state.queryTerm).then(
       data => {
         if (isEmpty(data)) {
-          this.setState({isLoading: false, errors: 'No results found. Please try again!!'})
+          this.setState({isLoading: false, errors: 'No results found. Please try again!!', movies: {}})
         } else {
         this.setState({isLoading: false, errors: '', movies: data})
         }
@@ -44,7 +44,7 @@ class Home extends Component {
 
   render () {
     const matchPath = this.props.match.path
-  
+
     return (
       <div style={{margin: '0 0 0 30px'}}>
         <SearchBar
@@ -62,17 +62,17 @@ class Home extends Component {
           /> :
         null}
         <Grid divided={!isEmpty(this.state.movies)}>
-          <Grid.Column width={4} >
+          <Grid.Column width={5} >
             <MovieLinkList movies={this.state.movies} moviePath={matchPath} />
           </Grid.Column>
-          <Grid.Column width={12} style={{overflow: 'visible'}}>
+          <Grid.Column width={11} style={{overflow: 'visible'}}>
             <Route path={`${matchPath}/:movieId`} render={({match}) => {
                 const movieId = match.params.movieId
                 const movie = this.state.movies[movieId]
                 return (
                   <Item style={{padding: '0.785714em 0.928571em', paddingTop: '0.3em', position: 'sticky', top: '70px'}}>
                     {this.state.movies[movieId] ?
-                      <MovieDetail matchPath={matchPath} movie={movie} movieId={movieId} /> :
+                      <MovieDetail movie={movie} /> :
                       <Header as='h3'>No Matching Movie Found!!</Header>
                     }
                   </Item>
