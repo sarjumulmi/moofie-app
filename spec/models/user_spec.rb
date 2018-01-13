@@ -13,6 +13,6 @@ RSpec.describe User, type: :model do
   end
 
   context 'User association' do
-    it {should have_many(:lists)}
+    it {should have_many(:movies)}
   end
 end

@@ -8,5 +8,4 @@
 require 'faker'
 require 'factory_bot'
 users = FactoryBot.create_list(:user, 2)
-FactoryBot.create(:list, user: users[0])
-FactoryBot.create(:list_with_movies, user: users[0])
+FactoryBot.create_list(:movie, 5, user: users[0])
