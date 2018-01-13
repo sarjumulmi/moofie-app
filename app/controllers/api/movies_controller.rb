@@ -1,10 +1,10 @@
 class API::MoviesController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :authenticate_user, :set_list, :authenticate_current_user
+  before_action :authenticate_user
   before_action :set_movie, only: [:show]
 
   def index
-    movies = @list.movies
+    movies = current_user.movies
     if !movies.empty?
       render json: movies, status: 200
     else
@@ -13,17 +13,11 @@ class API::MoviesController < ApplicationController
   end
 
   def create
-    movie = Movie.find_or_initialize_by(ext_id: params[:movie][:ext_id])
-    if movie.id
-      @list.movies<<movie
-      render json: movie, status: 201
+    @movie = current_user.movies.build(movie_params)
+    if @movie.save
+      render json: @movie, status: 201
     else
-      @list.movies.build(movie_params)
-      if @list.save
-        render json: movie, status: 201
-      else
-        render json: {errors: {messages:list.errors.messages}}, status: 422
-      end
+      render json: {errors: {messages:@movie.errors.messages}}, status: 422
     end
 
   end
@@ -38,16 +32,8 @@ class API::MoviesController < ApplicationController
 
   private
 
-  def set_list
-    @list = List.find_by(id: params[:list_id], user: current_user)
-  end
-
-  def authenticate_current_user
-    render json: {errors: {messages: ["User not authorized"] }}, status: 403 unless @list
-  end
-
   def movie_params
-    params.require(:movie).permit(:title, :rating, :poster_path, :ext_id)
+    params.require(:movie).permit(:title, :rating, :poster_path, :ext_id, :tagline, :genres, :production_companies, :release_year, :url, :runtime, :overview)
   end
 
   def set_movie
