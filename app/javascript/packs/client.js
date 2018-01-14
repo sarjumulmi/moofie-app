@@ -60,3 +60,21 @@ export function formatMovies (results) {
 function getInnerProperties (movie, property, separator) {
   return (movie[property].map(property => property.name).join(separator) || 'Not found')
 }
+
+export function formatMovieinDB (movie) {
+  return ({
+    [movie.id]: {
+      ext_id: movie.ext_id,
+      title: movie.title,
+      tagline: movie.tagline,
+      url: movie.url,
+      poster_path: movie.poster_path,
+      rating: movie.rating,
+      genres: movie.genres,
+      overview: movie.overview,
+      release_year: movie.release_year,
+      production_companies: movie.production_companies,
+      runtime: movie.runtime
+    }
+  })
+}

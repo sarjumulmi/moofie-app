@@ -5,6 +5,7 @@ import MovieDetail from './../movies/movieDetail'
 import { Message, Header, Grid, Item } from 'semantic-ui-react'
 import {connect} from 'react-redux';
 import { getMovies, getMovieDetails } from './../../actions/searchActions'
+import { fetchMovies } from './../../actions/moviesActions'
 import isEmpty from 'lodash/isEmpty'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
@@ -19,6 +20,21 @@ class Home extends Component {
       errors: ''
     }
   }
+  
+  componentDidMount () {
+    this.setState({
+      isLoading:true
+    })
+    this.props.fetchMovies().then(moviesData => {
+      this.setState({
+        isLoading: false
+      })
+    }).catch(err => {
+      const errors = setErrors(err.response.data)
+      this.setState({isLoading: false, errors: errors.messages[0]})
+    })
+  }
+
   onChange = (e) => {
     this.setState({
       queryTerm: e.target.value
@@ -86,4 +102,8 @@ class Home extends Component {
   }
 }
 
-export default connect(null, {getMovies, getMovieDetails})(Home)
+const mapStateToProps = (state) => ({
+  moviesById: state.moviesById
+})
+
+export default connect(mapStateToProps, {getMovies, getMovieDetails, fetchMovies})(Home)
