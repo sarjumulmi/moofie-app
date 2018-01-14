@@ -16,8 +16,11 @@ class Navbar extends Component {
     const {activeItem} = this.state
     const userLinks = (
       <Menu size='huge' inverted fixed='top' style={{height: '75px'}}>
-        <Menu.Item as={Link} to='/' active={activeItem==='home'} name='home' onClick={this.handleItemClick}>
+        <Menu.Item style={{paddingRight: '2px', paddingLeft: '2px'}}>
           <Image src={logo} />
+        </Menu.Item>
+        <Menu.Item as={Link} to='/' active={activeItem==='home'} name='home' onClick={this.handleItemClick}>
+          Home
         </Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item as={Link} to='/movies/list' active={activeItem==='list'} name='list' position='right' onClick={this.handleItemClick}>My List</Menu.Item>
@@ -27,8 +30,11 @@ class Navbar extends Component {
     )
     const guestLinks = (
       <Menu size='huge' inverted fixed='top' style={{height: '75px'}}>
-        <Menu.Item as={Link} to='/' active={activeItem==='home'} name='home' onClick={this.handleItemClick}>
+        <Menu.Item style={{paddingRight: '2px', paddingLeft: '2px'}}>
           <Image src={logo} />
+        </Menu.Item>
+        <Menu.Item as={Link} to='/' active={activeItem==='home'} name='home' onClick={this.handleItemClick}>
+          Home
         </Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item as={Link} to='/signup' active={activeItem==='signup'} name='signup' position='right' onClick={this.handleItemClick}>Sign Up</Menu.Item>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MovieListDetail from './movieListDetail'
-import { Item } from 'semantic-ui-react'
+import { Item, Header } from 'semantic-ui-react'
 
 class MovieList extends Component {
   constructor (props) {
@@ -17,6 +17,12 @@ class MovieList extends Component {
       if (movie) {
         movies.push(
           <MovieListDetail movie={movie} key={id} id={id} />
+        )
+      } else {
+        return (
+          <Header as='h3' textAlign='center'>
+            No movies added to list yet!!
+          </Header>
         )
       }
     }

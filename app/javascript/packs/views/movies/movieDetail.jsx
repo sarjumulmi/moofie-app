@@ -5,7 +5,7 @@ import netflixLogo from './../../public/images/netflix-logo.png'
 import googlePlayLogo from './../../public/images/google-play-logo.png'
 
 const MovieDetail = ({movie}) => (
-  <Segment style={{width: '70%', backgroundColor: '#03a9f414'}}>
+  <Segment style={{width: '80%', backgroundColor: '#03a9f414'}}>
     <h2 style={{marginTop: '0', marginBottom: '0'}}>{movie.title}</h2>
     <p><small> - {movie.tagline}</small></p>
     <h4 style={{marginTop: '0', marginBottom: '0'}}>Genres</h4>
