@@ -80,18 +80,21 @@ class Home extends Component {
           <Route exact path={`${matchPath}/list`} component={MovieList} />
           <Grid divided={!isEmpty(this.state.movies)}>
             <Grid.Column width={5} >
-              <Route exact path={`${matchPath}`} render={(props) => {
+              <Route path={`${matchPath}`} render={(props) => {
+                if (props.location.pathname === `${matchPath}/list`) {
+                  return null
+                }
                 return (<MovieLinkList {...props} movies={this.state.movies} moviePath={matchPath} />)
                 }
                 } />
             </Grid.Column>
             <Grid.Column width={11} style={{overflow: 'visible'}}>
               <Route path={`${matchPath}/:movieId`} render={({match}) => {
+                  const movieId = match.params.movieId
+                  const movie = this.state.movies[movieId]
                   if (match.params.movieId === 'list') {
                     return null
                   }
-                  const movieId = match.params.movieId
-                  const movie = this.state.movies[movieId]
                   return (
                     <Item style={{padding: '0.785714em 0.928571em', paddingTop: '0.3em', position: 'sticky', top: '70px'}}>
                       {this.state.movies[movieId] ?
