@@ -2,13 +2,14 @@ import React, {Component} from 'react'
 import SearchBar from './../search/'
 import MovieLinkList from './../movies/movieLinkList'
 import MovieDetail from './../movies/movieDetail'
+import MovieList from './../movies/movieList'
 import { Message, Header, Grid, Item } from 'semantic-ui-react'
 import {connect} from 'react-redux';
 import { getMovies, getMovieDetails } from './../../actions/searchActions'
 import { fetchMovies } from './../../actions/moviesActions'
 import isEmpty from 'lodash/isEmpty'
 import axios from 'axios'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 class Home extends Component {
   constructor (props) {
@@ -20,7 +21,7 @@ class Home extends Component {
       errors: ''
     }
   }
-  
+
   componentDidMount () {
     this.setState({
       isLoading:true
@@ -60,7 +61,6 @@ class Home extends Component {
 
   render () {
     const matchPath = this.props.match.path
-
     return (
       <div style={{margin: '0 0 0 30px'}}>
         <SearchBar
@@ -77,26 +77,33 @@ class Home extends Component {
             content={this.state.errors}
           /> :
         null}
-        <Grid divided={!isEmpty(this.state.movies)}>
-          <Grid.Column width={5} >
-            <MovieLinkList movies={this.state.movies} moviePath={matchPath} />
-          </Grid.Column>
-          <Grid.Column width={11} style={{overflow: 'visible'}}>
-            <Route path={`${matchPath}/:movieId`} render={({match}) => {
-                const movieId = match.params.movieId
-                const movie = this.state.movies[movieId]
-                return (
-                  <Item style={{padding: '0.785714em 0.928571em', paddingTop: '0.3em', position: 'sticky', top: '70px'}}>
-                    {this.state.movies[movieId] ?
-                      <MovieDetail movie={movie} /> :
-                      <Header as='h3'>No Matching Movie Found!!</Header>
-                    }
-                  </Item>
-                )
-              }}
-            />
-          </Grid.Column>
-        </Grid>
+          <Route exact path={`${matchPath}/list`} component={MovieList} />
+          <Grid divided={!isEmpty(this.state.movies)}>
+            <Grid.Column width={5} >
+              <Route exact path={`${matchPath}`} render={(props) => {
+                return (<MovieLinkList {...props} movies={this.state.movies} moviePath={matchPath} />)
+                }
+                } />
+            </Grid.Column>
+            <Grid.Column width={11} style={{overflow: 'visible'}}>
+              <Route path={`${matchPath}/:movieId`} render={({match}) => {
+                  if (match.params.movieId === 'list') {
+                    return null
+                  }
+                  const movieId = match.params.movieId
+                  const movie = this.state.movies[movieId]
+                  return (
+                    <Item style={{padding: '0.785714em 0.928571em', paddingTop: '0.3em', position: 'sticky', top: '70px'}}>
+                      {this.state.movies[movieId] ?
+                        <MovieDetail movie={movie} /> :
+                        <Header as='h3'>No Matching Movie Found!!</Header>
+                      }
+                    </Item>
+                  )
+                }}
+              />
+            </Grid.Column>
+          </Grid>
       </div>
     )
   }
