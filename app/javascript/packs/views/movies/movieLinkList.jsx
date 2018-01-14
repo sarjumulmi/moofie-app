@@ -16,13 +16,13 @@ class MovieLinkList extends Component {
   }
   render () {
     let movies = []
-    for (const [id, movie] of Object.entries(this.props.movies)) {
+    for (const [movieId, movie] of Object.entries(this.props.movies)) {
       movies.push(<MovieLink movie={movie}
-        key={id}
+        key={movieId}
         moviePath={this.props.moviePath}
-        movieId={id}
+        movieId={movieId}
         handleItemClick={this.handleItemClick}
-        active={this.state.activeItem === `movie-${id}`} />)
+        active={this.state.activeItem === `movie-${movieId}`} />)
     }
     return (
       <div>
