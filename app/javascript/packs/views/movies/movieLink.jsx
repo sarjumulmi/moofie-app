@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Image, Menu, Header, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import AddToList from './addToList';
 
 class MovieLink extends Component {
 
@@ -26,7 +27,7 @@ class MovieLink extends Component {
               <Header as='h3' style={{marginTop: '0', marginBottom: '5px'}}>{movie.title}</Header>
               <p style={{marginTop: '0', marginBottom: '5px'}}>{movie.release_year} </p>
               <p style={{marginTop: '0', marginBottom: '5px'}}>{movie.genres} </p>
-              <span><Icon link name='add' size='large' color='blue' onClick={()=>alert('hiiii!!')}/>Add to List</span>
+              <AddToList movieId={movieId} movie={{...movie, ext_id: movieId}}/>
             </td>
           </tr>
         </tbody>
