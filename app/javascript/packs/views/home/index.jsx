@@ -10,6 +10,7 @@ import { fetchMovies } from './../../actions/moviesActions'
 import isEmpty from 'lodash/isEmpty'
 import axios from 'axios'
 import { Route, Switch } from 'react-router-dom'
+import { setErrors } from './../../client'
 
 class Home extends Component {
   constructor (props) {
@@ -23,17 +24,20 @@ class Home extends Component {
   }
 
   componentDidMount () {
-    this.setState({
-      isLoading:true
-    })
-    this.props.fetchMovies().then(moviesData => {
+    if (this.props.isAuthenticated) {
       this.setState({
-        isLoading: false
+        isLoading:true
       })
-    }).catch(err => {
-      const errors = setErrors(err.response.data)
-      this.setState({isLoading: false, errors: errors.messages[0]})
-    })
+      this.props.fetchMovies().then(moviesData => {
+        this.setState({
+          isLoading: false
+        })
+      }).catch(err => {
+        const errors = setErrors(err.response.data)
+        this.setState({isLoading: false, errors: errors.messages[0]})
+      })
+    }
+
   }
 
   onChange = (e) => {
@@ -113,7 +117,8 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  moviesById: state.moviesById
+  moviesById: state.moviesById,
+  isAuthenticated: state.auth.isAuthenticated
 })
 
 export default connect(mapStateToProps, {getMovies, getMovieDetails, fetchMovies})(Home)
