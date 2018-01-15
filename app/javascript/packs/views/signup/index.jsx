@@ -6,6 +6,7 @@ import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 import { handleError, setErrors, formatErrorMessages } from './../../client'
 import isEmpty from 'lodash/isEmpty'
 import { userSignupRequest } from './../../actions/signupActions'
+import VanishingComponent from './../../containers/vanishingComponent'
 
 class SignupForm extends Component {
   constructor (props) {
@@ -29,10 +30,7 @@ class SignupForm extends Component {
     })
   }
 
-  isSuccess = () => {
-    const success = isEmpty(this.state.errors)
-    return success
-  }
+  isSuccess = () => (isEmpty(this.state.errors))
 
   handleSubmit = (e) => {
     e.preventDefault()
@@ -66,7 +64,7 @@ class SignupForm extends Component {
   render () {
     return (
       <div style={{ height: '100%', width: '40%', margin: '0 auto' }}>
-        <Form size='tiny' onSubmit={this.handleSubmit} loading={this.state.isLoading} success={this.state.displaySuccessMsg} error={!this.isSuccess()}>
+        <Form size='tiny' onSubmit={this.handleSubmit} loading={this.state.isLoading} success={this.state.displaySuccessMsg}>
           <Segment stacked>
             <Form.Input fluid required
               label='User Name'
@@ -95,11 +93,6 @@ class SignupForm extends Component {
                 onChange={this.onChange}
             />
             <Message
-              error
-              header='Error'
-              content= {formatErrorMessages(this.state.errors)}
-            />
-            <Message
               success
               header='Success'
               content= 'User Sign Up Successful. Please log in!!'
@@ -107,6 +100,16 @@ class SignupForm extends Component {
           <Button color='teal' fluid disabled={this.state.isLoading}>Submit</Button>
           </Segment>
         </Form>
+        {!this.isSuccess() ?
+          <VanishingComponent time={20000}>
+            <Message error style={{marginTop: '10px'}}>
+              <Message.Header>Error</Message.Header>
+              <p>{formatErrorMessages(this.state.errors)}. Try again. </p>
+            </Message>
+          </VanishingComponent>
+          :
+          null
+        }
         <Message>
           <Link to='/login'>Already a member? Login</Link>
         </Message>

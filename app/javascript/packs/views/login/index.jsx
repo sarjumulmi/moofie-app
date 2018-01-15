@@ -6,6 +6,7 @@ import { Button, Form, Message, Segment } from 'semantic-ui-react'
 import isEmpty from 'lodash/isEmpty'
 import { login } from './../../actions/authActions'
 import { handleError, setErrors, formatErrorMessages } from './../../client'
+import VanishingComponent from './../../containers/vanishingComponent'
 
 class LoginForm extends Component {
   constructor (props) {
@@ -49,7 +50,7 @@ class LoginForm extends Component {
     } else {
       return (
         <div style={{ height: '100%', width: '40%', margin: '0 auto' }}>
-          <Form onSubmit={this.handleSubmit} loading={this.state.isLoading} error={!isEmpty(this.state.errors)}>
+          <Form onSubmit={this.handleSubmit} loading={this.state.isLoading} >
             <Segment stacked>
               <Form.Input fluid required
                 label='Username/Email'
@@ -64,14 +65,19 @@ class LoginForm extends Component {
                 type='password'
                 onChange={this.onChange}
               />
-              <Message
-                error
-                header='Error'
-                content= {formatErrorMessages(this.state.errors)}
-              />
               <Button color='teal' fluid disabled={false}>Submit</Button>
             </Segment>
           </Form>
+          {!isEmpty(this.state.errors) ?
+            <VanishingComponent time={20000}>
+              <Message error style={{marginTop: '10px'}}>
+                <Message.Header>Error</Message.Header>
+                <p>{formatErrorMessages(this.state.errors)}. Try again. </p>
+              </Message>
+            </VanishingComponent>
+            : null
+          }
+
           <Message>
             <Link to='/signup'>Not a member? Signup</Link>
           </Message>

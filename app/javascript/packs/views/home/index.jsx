@@ -12,6 +12,7 @@ import axios from 'axios'
 import { Route, Switch } from 'react-router-dom'
 import { setErrors } from './../../client'
 import PrivateRoute from './../../containers/privateRoute'
+import VanishingComponent from './../../containers/vanishingComponent'
 
 class Home extends Component {
   constructor (props) {
@@ -75,13 +76,17 @@ class Home extends Component {
           loading={!!this.state.queryTerm && this.state.isLoading}
           />
         {!!this.state.errors ?
-          <Message
-            compact
-            warning={!!this.state.errors}
-            header='Error'
-            content={this.state.errors}
-          /> :
-        null}
+          <VanishingComponent time={10000} transitionDuration={2000}>
+            <Message
+              compact
+              warning={!!this.state.errors}
+              header='Error'
+              content={this.state.errors}
+              style={{width: '30%', marginLeft: 'auto', marginRight: 'auto'}}
+            />
+          </VanishingComponent>
+          :
+          null}
           <PrivateRoute isAuthenticated={this.props.isAuthenticated} exact path={`${matchPath}/list`} component={MovieList} />
           <Grid divided={!isEmpty(this.state.movies)}>
             <Grid.Column width={5} >

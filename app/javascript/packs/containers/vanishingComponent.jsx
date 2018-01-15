@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import {Transition} from 'semantic-ui-react'
 
 export default class VanishingComponent extends Component {
   constructor (props) {
@@ -23,16 +24,18 @@ export default class VanishingComponent extends Component {
   render () {
     const {visible} = this.state
     return (
-      <div>
-        {visible ? this.props.children : null}
-      </div>
+      <Transition visible={visible} animation='fade' duration={this.props.transitionDuration}>
+        {this.props.children}
+      </Transition>
     )
   }
 }
 
 VanishingComponent.propTypes = {
-  time: PropTypes.number
+  time: PropTypes.number,
+  transitionDuration: PropTypes.number
 }
 VanishingComponent.defaultProps = {
-  time: 5000
+  time: 5000,
+  transitionDuration: 500
 }
