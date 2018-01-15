@@ -7,5 +7,4 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'faker'
 require 'factory_bot'
-users = FactoryBot.create_list(:user, 2)
-FactoryBot.create_list(:movie, 5, user: users[0])
+FactoryBot.create_list(:user, 2)
