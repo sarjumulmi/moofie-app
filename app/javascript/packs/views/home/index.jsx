@@ -11,6 +11,7 @@ import isEmpty from 'lodash/isEmpty'
 import axios from 'axios'
 import { Route, Switch } from 'react-router-dom'
 import { setErrors } from './../../client'
+import PrivateRoute from './../../containers/privateRoute'
 
 class Home extends Component {
   constructor (props) {
@@ -81,7 +82,7 @@ class Home extends Component {
             content={this.state.errors}
           /> :
         null}
-          <Route exact path={`${matchPath}/list`} component={MovieList} />
+          <PrivateRoute isAuthenticated={this.props.isAuthenticated} exact path={`${matchPath}/list`} component={MovieList} />
           <Grid divided={!isEmpty(this.state.movies)}>
             <Grid.Column width={5} >
               <Route path={`${matchPath}`} render={(props) => {
