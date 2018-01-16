@@ -18,7 +18,7 @@ RSpec.describe 'User signup API', type: :request do
       it "returns a web token with the logged in user information" do
         json = JSON.parse(response.body, symbolize_names: true)
         decoded_token = JWT.decode json[:jwt], Rails.application.secrets.secret_key_base, true, { :algorithm => 'HS256' }
-        expect(decoded_token[0]['user']['username']).to eq(user.username)
+        expect(decoded_token[0]['username']).to eq(user.username)
       end
     end
 

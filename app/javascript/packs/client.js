@@ -62,19 +62,18 @@ function getInnerProperties (movie, property, separator) {
 }
 
 export function formatMovieinDB (movie) {
+  const {id, ...rest} = movie
   return ({
-    [movie.id]: {
-      ext_id: movie.ext_id,
-      title: movie.title,
-      tagline: movie.tagline,
-      url: movie.url,
-      poster_path: movie.poster_path,
-      rating: movie.rating,
-      genres: movie.genres,
-      overview: movie.overview,
-      release_year: movie.release_year,
-      production_companies: movie.production_companies,
-      runtime: movie.runtime
-    }
+    [id]: rest
   })
+}
+
+export function formatMoviesinDB (movies) {
+  let moviesById = {}
+  movies.forEach(movie => {
+    let {id, ...rest} = movie
+    moviesById[id] = rest
+  }
+  )
+  return moviesById
 }

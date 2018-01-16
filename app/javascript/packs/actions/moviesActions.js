@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ADD_MOVIE, ADD_MOVIES } from './types'
-import { setAuthorizationToken, formatMovieinDB } from './../client'
+import { setAuthorizationToken, formatMovieinDB, formatMoviesinDB } from './../client'
 
 export function addMovies (movies) {
   return ({
@@ -13,7 +13,7 @@ export function fetchMovies () {
   setAuthorizationToken(window.localStorage.jwt)
   return (dispatch) => {
     return axios.get('/api/movies').then(response => {
-      dispatch(addMovies(response.data))
+      dispatch(addMovies(formatMoviesinDB(response.data)))
       return response.data
     })
   }

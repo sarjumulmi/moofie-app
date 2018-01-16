@@ -19,11 +19,10 @@ class User < ApplicationRecord
 
   def to_token_payload
     # Returns the payload as a hash
-    {user: {
+    {
       userId: self.id,
       username: self.username,
       email: self.email
-      }
     }
   end
 end
