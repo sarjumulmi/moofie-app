@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   namespace :api do
     post '/signup', to: 'users#create'
     post '/user_token' => 'user_token#create'
-    resources :movies, only: [:index, :create, :show]
+    resources :movies, only: [:index, :create, :show, :destroy]
   end
 
   get "*path", to: "welcome#index"

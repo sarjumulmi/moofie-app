@@ -1,7 +1,7 @@
 class API::MoviesController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :authenticate_user
-  before_action :set_movie, only: [:show]
+  before_action :set_movie, only: [:show, :destroy]
 
   def index
     movies = current_user.movies
@@ -27,6 +27,14 @@ class API::MoviesController < ApplicationController
       render json:@movie, status: 200
     else
       render json: {errors: {messages:["Not Found"]}}, status: 404
+    end
+  end
+
+  def destroy
+    if current_user.movies.destroy(@movie)
+      render json:@movie, status: 200
+    else
+      render json: {errors: {messages:@movie.errors.messages}}, status: 404
     end
   end
 
