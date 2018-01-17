@@ -13,6 +13,6 @@ RSpec.describe User, type: :model do
   end
 
   context 'User association' do
-    it {should have_many(:movies)}
+    it {should have_many(:movies).dependent(:destroy)}
   end
 end

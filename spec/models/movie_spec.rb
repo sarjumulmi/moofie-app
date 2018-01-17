@@ -8,6 +8,6 @@ RSpec.describe Movie, type: :model do
   end
 
   context 'Movie association' do
-    it {should belong_to(:user).dependent(:destroy)}
+    it {should belong_to(:user)}
   end
 end
