@@ -4,7 +4,7 @@ import MovieLinkList from './../movies/movieLinkList'
 import MovieDetail from './../movies/movieDetail'
 import MovieList from './../movies/movieList'
 import { Message, Header, Grid, Item } from 'semantic-ui-react'
-import {connect} from 'react-redux';
+import {connect} from 'react-redux'
 import { getMovies, getMovieDetails } from './../../actions/searchActions'
 import { fetchMovies } from './../../actions/moviesActions'
 import isEmpty from 'lodash/isEmpty'

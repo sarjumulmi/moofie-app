@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ADD_MOVIE, ADD_MOVIES } from './types'
+import { ADD_MOVIE, ADD_MOVIES, DELETE_MOVIE } from './types'
 import { setAuthorizationToken, formatMovieinDB, formatMoviesinDB } from './../client'
 
 export function addMovies (movies) {
@@ -40,5 +40,23 @@ export function postMovie (movie) {
       return response.data
     }
     )
+  }
+}
+
+export function deleteMovie (id) {
+  return ({
+    type: DELETE_MOVIE,
+    id: id
+  })
+}
+
+export function removeMovie (id) {
+  setAuthorizationToken(window.localStorage.jwt)
+  return (dispatch) => {
+    return axios.delete(`/api/movies/${id}`)
+    .then(response => {
+      dispatch(deleteMovie(id))
+      return response.data
+    })
   }
 }
