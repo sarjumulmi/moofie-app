@@ -13,6 +13,7 @@ import { Route, Switch } from 'react-router-dom'
 import { setErrors } from './../../client'
 import PrivateRoute from './../../containers/privateRoute'
 import VanishingComponent from './../../containers/vanishingComponent'
+import PropTypes from 'prop-types'
 
 class Home extends Component {
   constructor (props) {
@@ -120,6 +121,27 @@ class Home extends Component {
       </div>
     )
   }
+}
+
+Home.propTypes = {
+  getMovies: PropTypes.func.isRequired,
+  getMovieDetails: PropTypes.func.isRequired,
+  fetchMovies: PropTypes.func.isRequired,
+  moviesById: PropTypes.shape({
+    id: PropTypes.shape({
+      ext_id: PropTypes.number,
+      tagline: PropTypes.string,
+      title: PropTypes.string,
+      overview: PropTypes.string,
+      rating: PropTypes.number,
+      genres: PropTypes.string,
+      release_year: PropTypes.string,
+      poster_path: PropTypes.string,
+      production_companies: PropTypes.string,
+      runtime: PropTypes.string
+    })
+  }),
+  isAuthenticated: PropTypes.bool
 }
 
 const mapStateToProps = (state) => ({

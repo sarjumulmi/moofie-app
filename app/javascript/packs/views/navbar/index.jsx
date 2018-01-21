@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Menu, Container, Image } from 'semantic-ui-react'
 import logo from './../../public/images/logo.png'
@@ -51,6 +52,10 @@ class Navbar extends Component {
       </Container>
     )
   }
+}
+
+Navbar.propTypes = {
+  auth: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => {

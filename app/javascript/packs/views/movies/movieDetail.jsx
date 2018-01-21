@@ -3,6 +3,7 @@ import {Segment, Image, Rating} from 'semantic-ui-react'
 import youtubeLogo from './../../public/images/youtube-logo.png'
 import netflixLogo from './../../public/images/netflix-logo.png'
 import googlePlayLogo from './../../public/images/google-play-logo.png'
+import PropTypes from 'prop-types'
 
 const MovieDetail = ({movie}) => (
   <Segment style={{width: '80%', backgroundColor: '#03a9f414'}}>
@@ -22,5 +23,16 @@ const MovieDetail = ({movie}) => (
     <p style={{marginBottom: '7px'}}><Image src={googlePlayLogo} floated='left' />Google Play</p>
   </Segment>
 )
+
+MovieDetail.propTyes = {
+  movie: PropTypes.shape({
+    title: PropTypes.string,
+    tagline: PropTypes.string,
+    overview: PropTypes.string,
+    rating: PropTypes.number,
+    genres: PropTypes.string,
+    production_companies: PropTypes.string
+  }).isRequired
+}
 
 export default MovieDetail

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { postMovie } from './../../actions/moviesActions'
+import PropTypes from 'prop-types'
 
 class AddToList extends Component {
   constructor (props) {
@@ -35,8 +36,10 @@ class AddToList extends Component {
     return (
       <div>
         {!!isInList ?
-          <span><Icon name='checkmark' size='large' color='green' /> Added to List </span> :
           <span>
+            <Icon name='checkmark' size='large' color='green' /> Added to List
+          </span>
+        : <span>
             <Icon link
             name='add'
             size='large'
@@ -51,6 +54,34 @@ class AddToList extends Component {
       </div>
     )
   }
+}
+
+AddToList.propTyes = {
+  postMovie: PropTypes.func.isRequired,
+  moviesById: PropTypes.shape({
+    id: PropTypes.shape({
+      title: PropTypes.string,
+      overview: PropTypes.string,
+      rating: PropTypes.number,
+      genres: PropTypes.string,
+      release_year: PropTypes.string,
+      poster_path: PropTypes.string,
+      runtime: PropTypes.string
+    })
+  }), 
+  movieId: PropTypes.number.isRequired,
+  movie: PropTypes.shape({
+    ext_id: PropTypes.number.isRequired,
+    title: PropTypes.string,
+    tagline: PropTypes.string,
+    overview: PropTypes.string,
+    rating: PropTypes.number,
+    genres: PropTypes.string,
+    release_year: PropTypes.string,
+    poster_path: PropTypes.string,
+    runtime: PropTypes.string
+  }).isRequired,
+  isAuthenticated: PropTypes.bool
 }
 
 const mapStateToProps = (state) => ({

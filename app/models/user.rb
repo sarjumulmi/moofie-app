@@ -12,13 +12,13 @@ class User < ApplicationRecord
     self.where(email: identifier).or(self.where(username: identifier))[0]
   end
 
-  # change payload structure to be sent as Authorization header to {user: {userId: , username: , email: }}
+  # change payload structure to be sent as Authorization header to {userId: , username: , email: }
   def self.from_token_payload payload
-    self.find payload["user"]["userId"]
+    self.find payload["userId"]
   end
 
   def to_token_payload
-    # Returns the payload as a hash
+    # Returns the payload as a hash {userId: '', username: '', email: ''}
     {
       userId: self.id,
       username: self.username,

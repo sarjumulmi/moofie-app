@@ -4,6 +4,7 @@ import MovieListDetail from './movieListDetail'
 import { Item, Header, Message} from 'semantic-ui-react'
 import { removeMovie } from './../../actions/moviesActions'
 import VanishingComponent from './../../containers/vanishingComponent'
+import PropTypes from 'prop-types'
 
 class MovieList extends Component {
   constructor (props) {
@@ -60,6 +61,21 @@ class MovieList extends Component {
       </Item.Group>
     )
   }
+}
+
+MovieList.propTypes = {
+  removeMovie: PropTypes.func.isRequired,
+  moviesById: PropTypes.shape({
+    id: PropTypes.shape({
+      title: PropTypes.string,
+      overview: PropTypes.string,
+      rating: PropTypes.number,
+      genres: PropTypes.string,
+      release_year: PropTypes.string,
+      poster_path: PropTypes.string,
+      runtime: PropTypes.string
+    })
+  })
 }
 
 const mapStateToProps = (state) => {

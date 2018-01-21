@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Grid, Icon, Header, Image } from 'semantic-ui-react'
+import { Form, Grid, Icon, Image } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import moofieTitle from './../../public/images/moofieTitle.png'
 
@@ -25,6 +25,8 @@ const SearchBar = (props) => (
 )
 
 SearchBar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   queryTerm: PropTypes.string.isRequired
 }

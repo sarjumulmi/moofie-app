@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Item, Rating, Icon } from 'semantic-ui-react'
 import { removeMovie } from './../../actions/moviesActions'
+import PropTypes from 'prop-types'
 
 export default class MovieListDetail extends Component {
   constructor (props) {
@@ -43,4 +44,18 @@ export default class MovieListDetail extends Component {
       </Item>
     )
   }
+}
+
+MovieListDetail.propTypes = {
+  movie: PropTypes.shape({
+    ext_id: PropTypes.number,
+    title: PropTypes.string,
+    overview: PropTypes.string,
+    rating: PropTypes.number,
+    genres: PropTypes.string,
+    release_year: PropTypes.string,
+    poster_path: PropTypes.string,
+    runtime: PropTypes.string
+  }),
+  id: PropTypes.string
 }

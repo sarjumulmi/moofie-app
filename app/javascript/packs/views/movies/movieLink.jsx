@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import { Image, Menu, Header, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-import AddToList from './addToList';
+import AddToList from './addToList'
+import PropTypes from 'prop-types'
 
 class MovieLink extends Component {
 
@@ -35,6 +36,21 @@ class MovieLink extends Component {
 
     )
   }
+}
+
+MovieLink.propTypes = {
+  movie: PropTypes.shape({
+    title: PropTypes.string,
+    overview: PropTypes.string,
+    rating: PropTypes.number,
+    genres: PropTypes.string,
+    release_year: PropTypes.string,
+    poster_path: PropTypes.string,
+    runtime: PropTypes.string
+  }).isRequired,
+  movieId: PropTypes.string.isRequired,
+  active: PropTypes.bool.isRequired,
+  moviePath: PropTypes.string.isRequired
 }
 
 export default MovieLink

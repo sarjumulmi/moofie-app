@@ -87,7 +87,8 @@ class LoginForm extends Component {
   }
 }
 LoginForm.propTypes = {
-  login: PropTypes.func.isRequired
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
 }
 
 const mapStateToProps = (state) => {
