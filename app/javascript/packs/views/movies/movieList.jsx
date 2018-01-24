@@ -5,6 +5,7 @@ import { Item, Header, Message} from 'semantic-ui-react'
 import { removeMovie } from './../../actions/moviesActions'
 import VanishingComponent from './../../containers/vanishingComponent'
 import PropTypes from 'prop-types'
+import isEmpty from 'lodash/isEmpty'
 
 class MovieList extends Component {
   constructor (props) {
@@ -33,19 +34,18 @@ class MovieList extends Component {
   }
 
   render () {
+    if (isEmpty(this.props.moviesById)) {
+      return (
+        <Header as='h3' textAlign='center'>
+          No movies added to list yet!!
+        </Header>
+      )
+    }
     let movies = []
     for (const [id, movie] of Object.entries(this.props.moviesById)) {
-      if (movie) {
-        movies.push(
-          <MovieListDetail movie={movie} key={id} id={id} removeMovie={this.removeMovie} />
+      movies.push(
+        <MovieListDetail movie={movie} key={id} id={id} removeMovie={this.removeMovie} />
         )
-      } else {
-        return (
-          <Header as='h3' textAlign='center'>
-            No movies added to list yet!!
-          </Header>
-        )
-      }
     }
     return (
       <Item.Group divided style={{margin: '20px auto 15px auto', width: '80%'}}>
