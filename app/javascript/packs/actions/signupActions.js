@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch'
+import {login} from './authActions'
 
 export function userSignupRequest (userData) {
   return (dispatch) => {
@@ -11,5 +12,13 @@ export function userSignupRequest (userData) {
       body: JSON.stringify({user: userData})
     }
     return fetch('/api/signup', request)
+      .then((response) => {
+        const auth = {
+          identifier: userData.username,
+          password: userData.password
+        }
+        dispatch(login(auth))
+        return response
+      })
   }
 }

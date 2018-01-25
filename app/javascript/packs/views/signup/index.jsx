@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 import { handleError, setErrors, formatErrorMessages } from './../../client'
@@ -20,7 +20,7 @@ class SignupForm extends Component {
       },
       isLoading:false,
       errors: {},
-      displaySuccessMsg:false
+      shouldRedirect:false
     }
   }
   onChange = (e) => {
@@ -34,37 +34,32 @@ class SignupForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.setState({errors: {}, isLoading: true, displaySuccessMsg:false})
+    this.setState({errors: {}, isLoading: true})
     this.props.userSignupRequest(this.state.user)
-      .then((response) => handleError(response))
-      .then((user) => {
+      .then((response) => {
         this.setState({
-          isLoading:false,
-          displaySuccessMsg:true,
-          user:{
-            username:'',
-            password: '',
-            password_confirmation: '',
-            email:''
-          }
+          isLoading: false,
+          shouldRedirect: true
         })
-      })
-      .catch((err) => (err.json())
-          .then(errMsg => {
-              const errors = setErrors(errMsg)
-              this.setState({
-                isLoading:false,
-                errors
-              })
+        return handleError(response)})
+      .catch(err => err.json()
+        .then(errMsg => {
+          const errors = setErrors(errMsg)
+          this.setState({
+            isLoading:false,
+            errors
           })
-      )
-
+      })
+    )
   }
 
   render () {
+    if (this.state.shouldRedirect) {
+      return (<Redirect to='/' />)
+    }
     return (
       <div style={{ height: '100%', width: '40%', margin: '0 auto' }}>
-        <Form size='tiny' onSubmit={this.handleSubmit} loading={this.state.isLoading} success={this.state.displaySuccessMsg}>
+        <Form size='tiny' onSubmit={this.handleSubmit} loading={this.state.isLoading} >
           <Segment stacked>
             <Form.Input fluid required
               label='User Name'
@@ -91,11 +86,6 @@ class SignupForm extends Component {
                 value={this.state.user.password_confirmation}
                 type='password'
                 onChange={this.onChange}
-            />
-            <Message
-              success
-              header='Success'
-              content= 'User Sign Up Successful. Please log in!!'
             />
           <Button color='teal' fluid disabled={this.state.isLoading}>Submit</Button>
           </Segment>
