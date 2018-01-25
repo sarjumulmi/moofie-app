@@ -51,13 +51,14 @@ class Home extends Component {
   onSubmit = (e) => {
     e.preventDefault()
     this.props.history.push(this.props.match.path)
-    this.setState({errors:'', isLoading: true})
+    this.setState({movies: {}, errors:'', isLoading: true})
     this.props.getMovieDetails(this.state.queryTerm).then(
       data => {
         if (isEmpty(data)) {
           this.setState({isLoading: false, errors: 'No results found. Please try again!!', movies: {}})
         } else {
         this.setState({isLoading: false, errors: '', movies: data})
+        this.props.history.push(`${this.props.match.path}/${Object.keys(data)[0]}`)
         }
       }
     )
@@ -88,36 +89,30 @@ class Home extends Component {
           </VanishingComponent>
           :
           null}
-          <PrivateRoute isAuthenticated={this.props.isAuthenticated} exact path={`${matchPath}/list`} component={MovieList} />
-          <Grid divided={!isEmpty(this.state.movies)}>
-            <Grid.Column width={5} >
-              <Route path={`${matchPath}`} render={(props) => {
-                if (props.location.pathname === `${matchPath}/list`) {
-                  return null
-                }
-                return (<MovieLinkList {...props} movies={this.state.movies} moviePath={matchPath} />)
-                }
-                } />
-            </Grid.Column>
-            <Grid.Column width={11} style={{overflow: 'visible'}}>
-              <Route path={`${matchPath}/:movieId`} render={({match}) => {
-                  const movieId = match.params.movieId
-                  const movie = this.state.movies[movieId]
-                  if (match.params.movieId === 'list') {
-                    return null
-                  }
-                  return (
+          <Switch>
+            <PrivateRoute isAuthenticated={this.props.isAuthenticated} exact path={`${matchPath}/list`} component={MovieList} />
+            <Route path= {`${matchPath}/:movieId`} render={(props) => {
+              const movieId = props.match.params.movieId
+              const movie = this.state.movies[movieId]
+              return (
+                <Grid divided={!isEmpty(this.state.movies)}>
+                  <Grid.Column width={5}>
+                    <MovieLinkList movies={this.state.movies} moviePath={matchPath} />
+                  </Grid.Column>
+                  <Grid.Column width={11} style={{overflow: 'visible'}}>
                     <Item style={{padding: '0.785714em 0.928571em', paddingTop: '0.3em', position: 'sticky', top: '70px'}}>
                       {this.state.movies[movieId] ?
                         <MovieDetail movie={movie} /> :
                         <Header as='h3'>No Matching Movie Found!!</Header>
                       }
                     </Item>
-                  )
-                }}
-              />
-            </Grid.Column>
-          </Grid>
+                  </Grid.Column>
+                </Grid>
+              )
+              }}/>
+          </Switch>
+
+
       </div>
     )
   }

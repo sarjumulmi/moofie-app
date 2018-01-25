@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import MovieLink from './movieLink'
 import { Menu } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
+import isEmpty from 'lodash/isEmpty'
 
 class MovieLinkList extends Component {
   constructor (props) {
@@ -9,6 +10,11 @@ class MovieLinkList extends Component {
     this.state = {
       activeItem: ''
     }
+  }
+  componentWillMount () {
+      this.setState({
+        activeItem: `movie-${Object.keys(this.props.movies)[0]}`
+      })
   }
   handleItemClick = (e) => {
     this.setState({
@@ -24,7 +30,8 @@ class MovieLinkList extends Component {
         moviePath={this.props.moviePath}
         movieId={movieId}
         handleItemClick={this.handleItemClick}
-        active={this.state.activeItem === `movie-${movieId}`} />)
+        active={this.state.activeItem === `movie-${movieId}`}
+        />)
     }
     return (
       <div>
