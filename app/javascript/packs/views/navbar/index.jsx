@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Menu, Container, Image } from 'semantic-ui-react'
+import { Menu, Container, Image, Label } from 'semantic-ui-react'
 import logo from './../../public/images/logo.png'
 
 class Navbar extends Component {
@@ -13,8 +13,10 @@ class Navbar extends Component {
     }
   }
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
   render () {
     const {activeItem} = this.state
+    const movieNumber = Object.keys(this.props.moviesById).length
     const userLinks = (
       <Menu size='huge' inverted fixed='top' style={{height: '75px'}}>
         <Menu.Item style={{paddingRight: '2px', paddingLeft: '2px'}}>
@@ -24,7 +26,9 @@ class Navbar extends Component {
           Home
         </Menu.Item>
         <Menu.Menu position='right'>
-          <Menu.Item as={Link} to='/movies/list' active={activeItem==='list'} name='list' position='right' onClick={this.handleItemClick}>My List</Menu.Item>
+          <Menu.Item name='My List' as={Link} to='/movies/list' active={activeItem==='list'} name='list' position='right' onClick={this.handleItemClick}>
+            My List <span><Label color='yellow' floating style={{top: 'unset', bottom: '0.2em', left: '90%'}}>{movieNumber}</Label></span>  
+          </Menu.Item>
           <Menu.Item as={Link} to='/logout' active={activeItem==='logout'} name='logout' position='right' onClick={this.handleItemClick}>Logout</Menu.Item>
         </Menu.Menu>
       </Menu>
@@ -60,7 +64,8 @@ Navbar.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth
+    auth: state.auth,
+    moviesById: state.moviesById
   }
 }
 export default connect(mapStateToProps)(Navbar)
