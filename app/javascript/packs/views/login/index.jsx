@@ -45,11 +45,14 @@ class LoginForm extends Component {
     if (this.props.isAuthenticated) {
       const from = (this.props.location.state && this.props.location.state.from) || '/movies'
       return (
-        <Redirect to={from} />
+        <Redirect to={{
+            pathname: from,
+            state: {from: 'login'}
+            }} />
       )
     } else {
       return (
-        <div style={{ height: '100%', width: '40%', margin: '0 auto' }}>
+        <div style={{ height: '100%', width: '40%', margin: '10px auto' }}>
           <Form onSubmit={this.handleSubmit} loading={this.state.isLoading} >
             <Segment stacked>
               <Form.Input fluid required

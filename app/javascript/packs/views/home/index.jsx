@@ -69,14 +69,37 @@ class Home extends Component {
 
   render () {
     const matchPath = this.props.match.path
+    const from = this.props.location && this.props.location.state && this.props.location.state.from
     return (
       <div style={{margin: '0 0 0 30px'}}>
+        {from === 'login' &&
+          <VanishingComponent time={10000} transitionDuration={2000}>
+            <Message
+              compact
+              success
+              header='Log In Successful'
+              content='Welcome Back to Moofie!!'
+              style={{width: '30%', marginLeft: 'auto', marginRight: 'auto'}}
+            />
+          </VanishingComponent>
+        }
         <SearchBar
           queryTerm={this.state.queryTerm}
           onSubmit={this.onSubmit}
           onChange={this.onChange}
           loading={!!this.state.queryTerm && this.state.isLoading}
           />
+        {from === 'signup' &&
+          <VanishingComponent time={10000} transitionDuration={2000}>
+            <Message
+              compact
+              success
+              header='Sign Up Successful'
+              content='Welcome to Moofie!!'
+              style={{width: '30%', marginLeft: 'auto', marginRight: 'auto'}}
+            />
+          </VanishingComponent>
+        }
         {!!this.state.errors ?
           <VanishingComponent time={10000} transitionDuration={2000}>
             <Message

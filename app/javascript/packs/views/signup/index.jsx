@@ -55,10 +55,13 @@ class SignupForm extends Component {
 
   render () {
     if (this.state.shouldRedirect) {
-      return (<Redirect to='/' />)
+      return (<Redirect to={{
+        pathname: '/movies',
+        state: {from: 'signup'}
+      }} />)
     }
     return (
-      <div style={{ height: '100%', width: '40%', margin: '0 auto' }}>
+      <div style={{ height: '100%', width: '40%', margin: '10px auto' }}>
         <Form size='tiny' onSubmit={this.handleSubmit} loading={this.state.isLoading} >
           <Segment stacked>
             <Form.Input fluid required
