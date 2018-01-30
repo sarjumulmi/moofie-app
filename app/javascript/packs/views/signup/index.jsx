@@ -36,10 +36,7 @@ class SignupForm extends Component {
     e.preventDefault()
     this.setState({errors: {}, isLoading: true})
     this.props.userSignupRequest(this.state.user)
-      .then((response) => {
-        if (!response.ok) {
-          throw response
-        }
+      .then(() => {
         this.setState({
           isLoading: false,
           shouldRedirect: true

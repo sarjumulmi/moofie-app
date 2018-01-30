@@ -13,14 +13,14 @@ export function userSignupRequest (userData) {
     }
     return fetch('/api/signup', request)
       .then((response) => {
-        if (response.ok) {
-          const auth = {
-            identifier: userData.username,
-            password: userData.password
-          }
-          dispatch(login(auth))
+        if (!response.ok) {
+          throw response
         }
-        return response
+        const auth = {
+          identifier: userData.username,
+          password: userData.password
+        }
+        return dispatch(login(auth))
       })
   }
 }
