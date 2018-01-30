@@ -37,11 +37,14 @@ class SignupForm extends Component {
     this.setState({errors: {}, isLoading: true})
     this.props.userSignupRequest(this.state.user)
       .then((response) => {
+        if (!response.ok) {
+          throw response
+        }
         this.setState({
           isLoading: false,
           shouldRedirect: true
         })
-        return handleError(response)})
+        })
       .catch(err => err.json()
         .then(errMsg => {
           const errors = setErrors(errMsg)
@@ -61,8 +64,8 @@ class SignupForm extends Component {
       }} />)
     }
     return (
-      <div style={{ height: '100%', width: '40%', margin: '10px auto' }}>
-        <Form size='tiny' onSubmit={this.handleSubmit} loading={this.state.isLoading} >
+      <div style={{ height: '100%', width: '40%', margin: '0 auto' }}>
+        <Form size='tiny' onSubmit={this.handleSubmit} loading={this.state.isLoading} style={{ marginTop: '95px' }}>
           <Segment stacked>
             <Form.Input fluid required
               label='User Name'

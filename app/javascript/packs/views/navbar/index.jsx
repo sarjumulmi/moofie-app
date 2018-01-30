@@ -27,7 +27,7 @@ class Navbar extends Component {
         </Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item name='My List' as={Link} to='/movies/list' active={activeItem==='list'} name='list' position='right' onClick={this.handleItemClick}>
-            My List <span><Label color='yellow' floating style={{top: 'unset', bottom: '0.2em', left: '90%'}}>{movieNumber}</Label></span>  
+            My List <span><Label color='teal' floating style={{top: 'unset', bottom: '0.2em', left: '90%'}}>{movieNumber}</Label></span>  
           </Menu.Item>
           <Menu.Item as={Link} to='/logout' active={activeItem==='logout'} name='logout' position='right' onClick={this.handleItemClick}>Logout</Menu.Item>
         </Menu.Menu>

@@ -52,8 +52,8 @@ class LoginForm extends Component {
       )
     } else {
       return (
-        <div style={{ height: '100%', width: '40%', margin: '10px auto' }}>
-          <Form onSubmit={this.handleSubmit} loading={this.state.isLoading} >
+        <div style={{ height: '100%', width: '40%', margin: '0 auto' }}>
+          <Form onSubmit={this.handleSubmit} loading={this.state.isLoading} style={{ marginTop: '95px' }}>
             <Segment stacked>
               <Form.Input fluid required
                 label='Username/Email'
