@@ -31,6 +31,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'rack-cors'
 gem 'knock'
 gem 'jwt'
+gem 'rails_serve_static_assets'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
