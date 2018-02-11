@@ -24,8 +24,3 @@
 .env
 .DS_Store
 .ebignore
-
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
