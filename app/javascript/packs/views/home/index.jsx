@@ -21,9 +21,14 @@ class Home extends Component {
     this.state = {
       queryTerm: '',
       isLoading: false,
+      movieSearchResults: [],
       movies:{},
       errors: ''
     }
+  }
+
+  componentWillMount() {
+    this.resetComponent()
   }
 
   componentDidMount () {
@@ -40,30 +45,42 @@ class Home extends Component {
         this.setState({isLoading: false, errors: errors.messages[0]})
       })
     }
-
   }
 
-  onChange = (e) => {
+  resetComponent = () => this.setState({ isLoading: false, movieSearchResults: [], queryTerm: '' })
+
+  onSearchChange = (e, {value}) => {
     this.setState({
-      queryTerm: e.target.value
+      isLoading: true,
+      queryTerm: value
     })
+    if (this.state.queryTerm.length > 1) {
+      this.props.getMovies(this.state.queryTerm)
+        .then(results => {
+          this.setState({
+            isLoading: false,
+            movieSearchResults: results
+          })
+        })
+    }
+    if (this.state.queryTerm.length < 1) return this.setState({isLoading:false, movieSearchResults: [] })
   }
-  onSubmit = (e) => {
-    e.preventDefault()
+
+  onResultSelect = (e, {result}) => {
     this.props.history.push(this.props.match.path)
-    this.setState({movies: {}, errors:'', isLoading: true})
+    this.setState({movies: {}, errors:'', isLoading: true, queryTerm: result.title})
     this.props.getMovieDetails(this.state.queryTerm).then(
       data => {
         if (isEmpty(data)) {
           this.setState({isLoading: false, errors: 'No results found. Please try again!!', movies: {}})
         } else {
-        this.setState({isLoading: false, errors: '', movies: data})
+        this.setState({isLoading: false, movieSearchResults:[], errors: '', movies: data})
         this.props.history.push(`${this.props.match.path}/${Object.keys(data)[0]}`)
         }
       }
     )
     .catch((err) => {
-      this.setState({isLoading: false, errors: 'Something went wrong. Please try again!!'})
+      this.setState({isLoading: false, movieSearchResults:[], errors: 'Something went wrong. Please try again!!'})
     })
   }
 
@@ -84,10 +101,11 @@ class Home extends Component {
           </VanishingComponent>
         }
         <SearchBar
-          queryTerm={this.state.queryTerm}
-          onSubmit={this.onSubmit}
-          onChange={this.onChange}
           loading={!!this.state.queryTerm && this.state.isLoading}
+          queryTerm={this.state.queryTerm}
+          movieSearchResults={this.state.movieSearchResults}
+          onSearchChange={this.onSearchChange}
+          onResultSelect={this.onResultSelect}
           />
         {from === 'signup' &&
           <VanishingComponent time={10000} transitionDuration={2000}>
